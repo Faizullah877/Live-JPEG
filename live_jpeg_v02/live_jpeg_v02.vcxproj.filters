@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\Box.cpp" />
+    <ClCompile Include="src\codestream_box.cpp" />
+    <ClCompile Include="src\dct_coefficients.cpp" />
+    <ClCompile Include="src\decode_live_jpeg.cpp" />
+    <ClCompile Include="src\encode_live_jpeg.cpp" />
+    <ClCompile Include="src\Header.cpp" />
+    <ClCompile Include="src\pix_format_converter.cpp" />
+    <ClCompile Include="src\psnr.cpp" />
+    <ClCompile Include="src\read_jumb.cpp" />
+    <ClCompile Include="src\write_jpeg.cpp" />
+    <ClCompile Include="src\live_jpeg_main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Box.h" />
+    <ClInclude Include="src\codestream_box.h" />
+    <ClInclude Include="src\dct_coefficients.h" />
+    <ClInclude Include="src\decode_live_jpeg.h" />
+    <ClInclude Include="src\encode_live_jpeg.h" />
+    <ClInclude Include="src\Header.h" />
+    <ClInclude Include="src\pix_format_converter.h" />
+    <ClInclude Include="src\psnr.h" />
+    <ClInclude Include="src\read_jumb.h" />
+    <ClInclude Include="src\write_jpeg.h" />
+  </ItemGroup>
+</Project>

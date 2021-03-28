@@ -1,0 +1,111 @@
+******************************************************************
+Start Time                    : Wed Jun 24 12:39:12 2020
+
+Process ====>>>>>> Live_jpeg decoding.
+
+Source properties.
+	Source File Name             : VID_01_3840x1920_RGB24_20f_q100_arith.jpg
+	Source pixels Color Space   : RGB
+******************************************************************
+Start Time                    : Wed Jun 24 12:43:32 2020
+
+Process ====>>>>>> Live_jpeg decoding.
+
+Source properties.
+	Source File Name             : VID_01_3840x1920_RGB24_20f_q100_arith.jpg
+	Source pixels Color Space   : RGB
+	Total frames decoded        : 20
+Output Properties.
+	Output File Name             : DeVID_01_3840x1920_RGB24_20f_q100_arith.yuv
+	Decoding Time                : 15.593000 sec.
+End   Time                    : Wed Jun 24 12:43:47 2020
+***************************************************************
+******************************************************************
+Start Time                    : Wed Jun 24 12:54:16 2020
+
+Process ====>>>>>> Live_jpeg decoding.
+
+Source properties.
+	Source File Name             : VID_01_3840x1920_RGB24_20f_q100_arith.jpg
+	Source pixels Color Space   : RGB
+
+Error -> Failed to open source file. Name            : VID_01_3840x1920_RGB24_20f_q100_arith.jpg
+******************************************************************
+Start Time                    : Thu Jun 25 11:08:03 2020
+
+Process ====>>>>>> Live_jpeg decoding.
+
+Source properties.
+	Source File Name             : b2.jpg
+	Source pixels Color Space   : YCbCr
+	Total frames decoded        : 2
+Output Properties.
+	Output File Name             : d2.yuv
+	Decoding Time                : 1.564000 sec.
+End   Time                    : Thu Jun 25 11:08:04 2020
+***************************************************************
+******************************************************************
+Start Time                    : Thu Jun 25 11:14:51 2020
+
+Process ====>>>>>> Live_jpeg decoding.
+
+Source properties.
+	Source File Name             : b3.jpg
+	Source pixels Color Space   : YCbCr
+	Total frames decoded        : 2
+Output Properties.
+	Output File Name             : d3.yuv
+	Decoding Time                : 1.630000 sec.
+End   Time                    : Thu Jun 25 11:14:52 2020
+***************************************************************
+******************************************************************
+Start Time                    : Thu Jun 25 11:28:22 2020
+
+Process ====>>>>>> Live_jpeg decoding.
+
+Source properties.
+	Source File Name             : b4.jpg
+	Source pixels Color Space   : YCbCr
+	Total frames decoded        : 450
+Output Properties.
+	Output File Name             : DeAI_Building_3840x1920_YUV444P_450f_q100_s420_arith.yuv
+	Decoding Time                : 250.813995 sec.
+End   Time                    : Thu Jun 25 11:32:33 2020
+***************************************************************
+******************************************************************
+Running                       : G:\live_jpeg_v02\live_jpeg_v02\bin\x64\Release\live_jpeg_v02.exe
+Start Time                    : Sat Jul  4 18:03:11 2020
+
+Process ====>>>>>> Live_jpeg decoding.
+
+Source properties.
+	Source File Name             : b5_q95.jpg
+	Source pixels Color Space   : YCbCr
+Output Properties.
+	Total frames decoded        : 2
+	Output File Name             : abc.yuv
+	Decoding Time                : 0.811000 sec.
+End   Time                    : Sat Jul  4 18:03:12 2020
+***************************************************************
+******************************************************************
+Running                       : G:\live_jpeg_v02\live_jpeg_v02\bin\x64\Release\live_jpeg_v02.exe
+Start Time                    : Mon Oct 26 13:12:39 2020
+
+Process ====>>>>>> Live_jpeg decoding.
+
+Source properties.
+	Source File Name             : b5_q95.jpg
+	Source pixels Color Space   : YCbCr
+
+Error -> Failed to open source file. Name            : b5_q95.jpg
+******************************************************************
+Running                       : D:\live_jpeg_v02\live_jpeg_v02\bin\x64\Debug\live_jpeg_v02.exe
+Start Time                    : Fri Mar 26 14:25:52 2021
+
+Process ====>>>>>> Live_jpeg decoding.
+
+Source properties.
+	Source File Name             : b5_q95.jpg
+	Source pixels Color Space   : YCbCr
+
+Error -> Failed to open source file. Name            : b5_q95.jpg
