@@ -109,3 +109,14 @@ Source properties.
 	Source pixels Color Space   : YCbCr
 
 Error -> Failed to open source file. Name            : b5_q95.jpg
+******************************************************************
+Running                       : D:\live_jpeg_v02\live_jpeg_v02\bin\x64\Release\live_jpeg_v02.exe
+Start Time                    : Mon Jun 21 12:33:06 2021
+
+Process ====>>>>>> Live_jpeg decoding.
+
+Source properties.
+	Source File Name             : b5_q95.jpg
+	Source pixels Color Space   : YCbCr
+
+Error -> Failed to open source file. Name            : b5_q95.jpg
