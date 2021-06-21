@@ -100,8 +100,8 @@ void encode_live_jpeg(
 		fprintf(resulttxt, "\tSubsampling                    : %d\n", subsamp);
 		fprintf(resulttxt, "\tQuality                            : %d\n", quality);
 		if (arithmetic_flag) fprintf(resulttxt, "\tEntropy Encoding Scheme     : Arithmetic\n"); else  fprintf(resulttxt, "\tEntropy Encoding Scheme    : Huffman\n");
-		fprintf(resulttxt, "\tTotal input Frames          : %d\n", quality);
-		fprintf(resulttxt, "\tFrames to encode..          : %d\n", quality);
+		fprintf(resulttxt, "\tTotal input Frames          : %d\n", input_frame_count);
+		fprintf(resulttxt, "\tFrames to encode..          : %d\n", output_frame_count);
 
 	}
 
