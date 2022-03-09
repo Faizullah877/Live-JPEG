@@ -349,9 +349,7 @@ void encode_live_jpeg(
 			sprintf_s(fileN, 100, "Frame_%d.jpg", i);
 			err = fopen_s(&fff, (char*)fileN, "wb");
 			fwrite(jpeg_buf1, sizeof(unsigned char), jpeg_size1, fff);
-			fclose(fff);
-		}
-
+			 
 		if (diff_frame_size_to_txt) {
 			fs << " Size of frame in bytes   :  ";
 			fs << setw(4) << i;
