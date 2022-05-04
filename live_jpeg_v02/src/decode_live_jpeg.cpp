@@ -19,17 +19,17 @@
 using namespace std;
 
 
-void extract_key_frame_jpg_buf(byte* data, uint size, byte** keyFrameJPG, uint* keyFrameJPGsize) {
+void extract_key_frame_jpg_buf(Byte* data, uint size, Byte** keyFrameJPG, uint* keyFrameJPGsize) {
 
-	byte* fdata = data;
+	Byte* fdata = data;
 
-	vector<byte> header;
+	vector<Byte> header;
 	header.push_back(0xFF);
 	header.push_back(0xD8);
 
 
-	byte last = sj_get_byte(&fdata);
-	byte current = sj_get_byte(&fdata);
+	Byte last = sj_get_byte(&fdata);
+	Byte current = sj_get_byte(&fdata);
 	if (last != 0xFF || current != M_SOI) {
 		cout << "Image is not JPEG" << endl;
 		return;
@@ -98,7 +98,7 @@ void extract_key_frame_jpg_buf(byte* data, uint size, byte** keyFrameJPG, uint* 
 
 
 	*keyFrameJPGsize = header.size();
-	*keyFrameJPG = new byte[*keyFrameJPGsize];
+	*keyFrameJPG = new Byte[*keyFrameJPGsize];
 	memcpy(*keyFrameJPG, header.data(), *keyFrameJPGsize);
 
 
@@ -162,28 +162,6 @@ int		read_jpeg_memory(unsigned char* mem, unsigned long mem_size, bool ycbcr, JS
 	return 1;
 }
 
-
-void ReadBytestream2(const char* InputFile, DataBuffer* pBuffer) {
-	std::ifstream jpg(InputFile, std::ifstream::binary);
-	if (jpg) {
-		// get length of file:
-		jpg.seekg(0, jpg.end);
-		unsigned long int length = jpg.tellg();
-		jpg.seekg(0, jpg.beg);
-		//cout << "File size is : " << length << endl;
-		char* buffer = new char[length];
-		jpg.read(buffer, length);
-		if (jpg) {
-			//std::cout << "all characters read successfully.";
-			pBuffer->data = (unsigned char*)buffer;
-			pBuffer->size = length;
-		}
-		else
-			std::cout << "error: only " << jpg.gcount() << " could be read from input file";
-		jpg.close();
-	}
-
-}
 
 
 void ReadBytestream(FILE* fp, DataBuffer* pBuffer)
@@ -291,14 +269,14 @@ void decode_live_jpeg(
 		cout << endl;
 		return;
 	}
-	byte* keyFrameJPG = NULL;
+	Byte* keyFrameJPG = NULL;
 	uint keyFrameJPGsize = 0;
-	byte* dst_data = NULL;
+	Byte* dst_data = NULL;
 	uint dst_size = 0;
-	byte* header_buf;
+	Byte* header_buf;
 	uint header_size;
 	uint frame_counter = 0;
-	byte* sosL_payload;
+	Byte* sosL_payload;
 	uint sosL_payload_len;
 	uint width;
 	uint height;
@@ -338,16 +316,16 @@ void decode_live_jpeg(
 	for (uint i = 0; i < 10; ++i)
 		cout << "diff frame : " << i << " sos size is : " << sosL_arr[i + 1] << endl;*/
 
-	byte* diff_sos_buf = NULL;
+	Byte* diff_sos_buf = NULL;
 	double diff_sos_buf_len;
 	extract_contiguous_cs_box(ptr->data, ptr->size, &diff_sos_buf, &diff_sos_buf_len);
-	byte* sos_data = diff_sos_buf;
+	Byte* sos_data = diff_sos_buf;
 
 
 	if(wdf_flag){
 
 
-		byte* sos_data1 = sos_data;
+		Byte* sos_data1 = sos_data;
 		for (int i = 0; i < total_frames-1; ++i) {
 			FILE *fff;
 			errno_t err;
@@ -365,7 +343,7 @@ void decode_live_jpeg(
 		}
 	}
 	//exit(1);
-	byte* mem = ptr->data;
+	Byte* mem = ptr->data;
 	uint mem_size = ptr->size;
 
 	HANDLE_JPEG hjpeg1;
@@ -394,7 +372,7 @@ void decode_live_jpeg(
 	frame_counter++;
 	for (uint i = 1; i < total_frames; ++i) {
 		uint curr_jpeg_size = sosL_arr[i];
-		byte* curr_jpeg_buf = new byte[curr_jpeg_size];
+		Byte* curr_jpeg_buf = new Byte[curr_jpeg_size];
 		//memcpy(curr_jpeg_buf, header_buf, header_size);
 		//curr_jpeg_buf += header_size;
 		memcpy(curr_jpeg_buf, sos_data, sosL_arr[i]);

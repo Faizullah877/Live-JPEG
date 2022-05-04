@@ -3,42 +3,32 @@
 #include <vector>
 #include <chrono>
 #include <jpeg/include/jpeglib.h>
-//#include <libjpeg-turbo/include/jpeglib.h>
 #include <jpeg/jpeg.h>
-//#include <libjpeg-turbo/jpeg.h>
 #include "Header.h"
 #include "dct_coefficients.h"
 #include "Box.h"
 #include "codestream_box.h"
 #include "write_jpeg.h"
 #include "jpeg/src/turbojpeg.h"
-//#include <libjpeg-turbo/src/turbojpeg.h>
 #include "pix_format_converter.h"
 
 #include <fstream>
 #include <iomanip>
 using namespace std;
 
-//BOOL GetFileSizeEx(
-//	HANDLE         hFile,
-//	PLARGE_INTEGER lpFileSize
-//);
-//void extract_curr_sos_data(byte* jpeg_data, unsigned int jpegsize, byte** sos_data, unsigned int* sos_size);
-
-
 void encode_live_jpeg(
-	char * executable_name,
+	char* executable_name,
 	const char* In_file_name,
-	const char* out_file_name, 
-	uint width, 
-	uint height, 
-	uint quality, 
-	uint input_frame_count, 
+	const char* out_file_name,
+	uint width,
+	uint height,
+	uint quality,
+	uint input_frame_count,
 	uint output_frame_count,
-	MEDIA_FORMAT input_format, 
-	bool ycbcr, 
-	int subsamp, 
-	bool wsf_flag, 
+	MEDIA_FORMAT input_format,
+	bool ycbcr,
+	int subsamp,
+	bool wsf_flag,
 	bool wdf_flag,
 	bool arithmetic_flag) {
 	if (input_format != MEDIA_YUV444I && input_format != MEDIA_YUV444P) {
@@ -48,8 +38,8 @@ void encode_live_jpeg(
 
 	bool diff_frame_size_to_txt = false;
 	fstream fs;
-	if(diff_frame_size_to_txt){
-		
+	if (diff_frame_size_to_txt) {
+
 		fs.open("diff_frame_sizes.txt", std::fstream::in | std::fstream::out | std::fstream::app);
 	}
 
@@ -66,7 +56,7 @@ void encode_live_jpeg(
 		cout << endl;
 		//return;
 	}
-	auto start1 = chrono::high_resolution_clock::now(); 
+	auto start1 = chrono::high_resolution_clock::now();
 	auto start_time = chrono::system_clock::to_time_t(chrono::system_clock::now());
 	printf("Running : %s\n", executable_name);
 	cout << "Process ====>>>>>> Live_jpeg Encoding" << endl;
@@ -82,7 +72,7 @@ void encode_live_jpeg(
 	if (arithmetic_flag) cout << "\tEntropy Encoding Scheme     : Arithmetic\n"; else  cout << "\tEntropy Encoding Scheme    : Huffman\n";
 	cout << "\tTotal input frames          : " << input_frame_count << endl;
 	cout << "\tFrames to encode            : " << output_frame_count << endl;
-	
+
 	if (err3 == 0) {
 		char str1[26];
 		ctime_s(str1, sizeof str1, &start_time);
@@ -105,12 +95,12 @@ void encode_live_jpeg(
 
 	}
 
-	DataBuffer *pBuffer = new DataBuffer();
+	DataBuffer* pBuffer = new DataBuffer();
 	DataBuffer* ptr = new DataBuffer();
-	byte* keyFrameJPG = NULL;
+	Byte* keyFrameJPG = NULL;
 	uint keyFrameJPGsize = 0;
-	
-	byte* jpeg_buf = NULL;
+
+	Byte* jpeg_buf = NULL;
 	uint jpeg_size = 0;
 	uint* diff_frame_sos_size = new uint[output_frame_count];
 	diff_frame_sos_size[0] = output_frame_count;
@@ -147,14 +137,14 @@ void encode_live_jpeg(
 	ptr->info.num_comp = 3;
 
 	uint rawFrameSize = ptr->info.width * ptr->info.height * 3;
-	byte* rawFrameData = new byte[rawFrameSize];
+	Byte* rawFrameData = new Byte[rawFrameSize];
 	int size = fread(rawFrameData, sizeof(unsigned char), rawFrameSize, InFile);
 	if (input_format == MEDIA_YUV444P)
 	{
 		convert_yuv444p_to_yuv444I(rawFrameData, rawFrameSize, width, height);
 		//FILE* abc;
 		//errno_t errabc = fopen_s(&abc, "Raw_frame_01_1024x512_444P.yuv", "wb");
-		//fwrite(rawFrameData, sizeof(byte), rawFrameSize, abc);
+		//fwrite(rawFrameData, sizeof(Byte), rawFrameSize, abc);
 		//fclose(abc);
 	}
 
@@ -198,8 +188,8 @@ void encode_live_jpeg(
 		cinfo.comp_info[2].h_samp_factor = 1;
 		cinfo.comp_info[2].v_samp_factor = 1;
 	}
-	
-	if(arithmetic_flag)
+
+	if (arithmetic_flag)
 		cinfo.arith_code = TRUE;
 	jpeg_set_quality(&cinfo, quality, TRUE /* limit to baseline-JPEG values */);
 	jpeg_start_compress(&cinfo, TRUE);
@@ -209,15 +199,15 @@ void encode_live_jpeg(
 		(void)jpeg_write_scanlines(&cinfo, row_pointer, 1);
 	}
 	jpeg_finish_compress(&cinfo);
-	byte* header_buf = NULL;
+	Byte* header_buf = NULL;
 	uint header_buf_size;
 
 	copy_jpeg_header(jpeg_buf, jpeg_size, &header_buf, &header_buf_size);
 
 
 	// Key Frame in jpeg is ready to write
-	if(wsf_flag){ // write soure frame in jpeg 
-		FILE *ff;
+	if (wsf_flag) { // write soure frame in jpeg 
+		FILE* ff;
 		errno_t err12;
 		char fileN[100];
 		sprintf_s(fileN, 100, "Frame_0.jpg");
@@ -226,7 +216,7 @@ void encode_live_jpeg(
 		fclose(ff);
 	}
 	keyFrameJPGsize = jpeg_size;
-	keyFrameJPG = new byte[jpeg_size];
+	keyFrameJPG = new Byte[jpeg_size];
 	memcpy(keyFrameJPG, jpeg_buf, jpeg_size);
 	//memcpy_s(keyFrameJPG, jpeg_size, jpeg_buf, jpeg_size);
 
@@ -247,7 +237,7 @@ void encode_live_jpeg(
 
 		//fwrite(header_buf, sizeof(unsigned char), header_buf_size, fff111);
 		fwrite(pBuffer->data, sizeof(unsigned char), pBuffer->size, fd);
-		//byte eoi[2];
+		//Byte eoi[2];
 	//	eoi[0] = 0xFF;
 		//eoi[1] = 0xD9; 
 		//fwrite(eoi, sizeof(unsigned char), 2, fff111);
@@ -265,13 +255,13 @@ void encode_live_jpeg(
 	memcpy(pBuffer->data, jpeg_buf, jpeg_size);
 	pBuffer->size = jpeg_size;
 	uint diff_jpeg_size = 0;
-	byte* jpegpool = NULL;
+	Byte* jpegpool = NULL;
 	uint jpegpoolsize = 0;
-	vector<byte> sos_pool;
+	vector<Byte> sos_pool;
 	//jpeg_destroy_compress(&cinfo);
 
 	if (diff_frame_size_to_txt) {
-		fs << " Size of frame in bytes   :  ";
+		fs << " Size of frame in Bytes   :  ";
 		fs << setw(4) << 0;
 		fs << "  :  is     :    ";
 		fs << setw(13) << jpeg_size;
@@ -279,7 +269,7 @@ void encode_live_jpeg(
 	}
 
 	for (int i = 1; i < output_frame_count; ++i) {
-		byte* jpeg_buf1 = NULL;
+		Byte* jpeg_buf1 = NULL;
 		int jpeg_size1 = 0;
 		struct jpeg_compress_struct cinfo1;
 		struct jpeg_error_mgr jerr1;
@@ -326,12 +316,12 @@ void encode_live_jpeg(
 		//cout << "in here\n" << ftell(InFile);
 		if (input_format == MEDIA_YUV444P)
 		{
-			
+
 
 			convert_yuv444p_to_yuv444I(rawFrameData, rawFrameSize, width, height);
 			//FILE* abc;
 			//errno_t errabc = fopen_s(&abc, "Raw_frame_01_1024x512_444P.yuv", "wb");
-			//fwrite(rawFrameData, sizeof(byte), rawFrameSize, abc);
+			//fwrite(rawFrameData, sizeof(Byte), rawFrameSize, abc);
 			//fclose(abc);
 		}
 
@@ -349,30 +339,31 @@ void encode_live_jpeg(
 			sprintf_s(fileN, 100, "Frame_%d.jpg", i);
 			err = fopen_s(&fff, (char*)fileN, "wb");
 			fwrite(jpeg_buf1, sizeof(unsigned char), jpeg_size1, fff);
-			 
-		if (diff_frame_size_to_txt) {
-			fs << " Size of frame in bytes   :  ";
-			fs << setw(4) << i;
-			fs << "  :  is     :    ";
-			fs << jpeg_size1;
-		}
+
+			if (diff_frame_size_to_txt) {
+				fs << " Size of frame in Bytes   :  ";
+				fs << setw(4) << i;
+				fs << "  :  is     :    ";
+				fs << jpeg_size1;
+			}
 
 
 
-		//int uniq_freq[3340] = { 0 };
-		//int uniq_freq_counter = 0;
-		//int total_data = 0;
-		//int min = 0; int max = 0; int max_frq_occur = 0;
-		//cout << "Frame 2 JPEG size : " << jpeg_size1 << endl;
-		delete pBuffer->data;
-		pBuffer->data = new unsigned char[jpeg_size1];
-		memcpy(pBuffer->data, jpeg_buf1, jpeg_size1);
-		pBuffer->size = jpeg_size1;
-		get_coefficients_f(jpeg_buf1, jpeg_size1, hjpeg1, nextCoeff);
-		// find difference of coeffients. 
-		
-		for (uint c = 0; c < coeff_buf_size; c++) {
-			*(diff + c) = *(PreviousCoeff + c) -*(nextCoeff + c);
+			//int uniq_freq[3340] = { 0 };
+			//int uniq_freq_counter = 0;
+			//int total_data = 0;
+			//int min = 0; int max = 0; int max_frq_occur = 0;
+			//cout << "Frame 2 JPEG size : " << jpeg_size1 << endl;
+			delete pBuffer->data;
+			pBuffer->data = new unsigned char[jpeg_size1];
+			memcpy(pBuffer->data, jpeg_buf1, jpeg_size1);
+			pBuffer->size = jpeg_size1;
+			get_coefficients_f(jpeg_buf1, jpeg_size1, hjpeg1, nextCoeff);
+			// find difference of coeffients. 
+
+			for (uint c = 0; c < coeff_buf_size; c++) {
+				*(diff + c) = *(PreviousCoeff + c) - *(nextCoeff + c);
+			}
 			//uniq_freq[*(diff + c) + 1670]++;
 			//if (*(diff + c) > max)
 			//	max = *(diff + c);
@@ -425,8 +416,8 @@ void encode_live_jpeg(
 		//diff = PreviousCoeff;
 
 		pBuffer->additional_data = (unsigned char*)diff;
-		
-		
+
+
 		//pBuffer->additional_data = (unsigned char*)PreviousCoeff;
 		diff_jpeg_size = write_jpeg_memory_coefficients(pBuffer, hjpeg1, arithmetic_flag);
 		if (diff_frame_size_to_txt) {
@@ -435,7 +426,7 @@ void encode_live_jpeg(
 			fs << endl;
 		}
 
-		//byte* curr_sos_data = NULL;
+		//Byte* curr_sos_data = NULL;
 		//unsigned int curr_sos_size = 0;
 		//extract_curr_sos_data(pBuffer->data, pBuffer->size, &curr_sos_data, &curr_sos_size);
 		sos_pool.insert(sos_pool.end(), pBuffer->data, pBuffer->data + pBuffer->size);
@@ -445,8 +436,8 @@ void encode_live_jpeg(
 		//	cout << "Current Sos_size of diff frame : " << i << " is : " << curr_sos_size << endl;
 		//}
 
-		if(wdf_flag){
-			FILE *fff111;
+		if (wdf_flag) {
+			FILE* fff111;
 			errno_t err111;
 			char fileN111[100];
 			sprintf_s(fileN111, 100, "diff_Frame_%d.jpg", i);
@@ -454,7 +445,7 @@ void encode_live_jpeg(
 
 			//fwrite(header_buf, sizeof(unsigned char), header_buf_size, fff111);
 			fwrite(pBuffer->data, sizeof(unsigned char), pBuffer->size, fff111);
-			//byte eoi[2];
+			//Byte eoi[2];
 		//	eoi[0] = 0xFF;
 			//eoi[1] = 0xD9; 
 			//fwrite(eoi, sizeof(unsigned char), 2, fff111);
@@ -470,7 +461,7 @@ void encode_live_jpeg(
 		fflush(stdout);
 		jpeg_destroy_compress(&cinfo1);
 	}
-	if (diff_frame_size_to_txt) 
+	if (diff_frame_size_to_txt)
 		fs.close();
 
 	cout << endl;
@@ -478,12 +469,12 @@ void encode_live_jpeg(
 	jpeg_destroy_compress(&cinfo);
 
 
-	byte* uuid_box_data = NULL;
+	Byte* uuid_box_data = NULL;
 	uint uuid_box_size;
-	byte* dst_data1 = NULL;
+	Byte* dst_data1 = NULL;
 	unsigned int dst_size1;
 	sj_jumbf_super_box_ptr sosL_box = sj_create_jumbf_sosL_box(diff_frame_sos_size, output_frame_count, (char*)"Diff_frames_SOS_Lengths");
-	
+
 	jpeg_write_sos_jumbf(keyFrameJPG, keyFrameJPGsize, sosL_box, &dst_data1, &dst_size1);
 
 	unsigned char* dst_data = NULL;
@@ -509,7 +500,7 @@ void encode_live_jpeg(
 	}
 	double Source_size = (double)width * (double)height * (double)output_frame_count;
 	double dist_size = dst_size;
-	float bpp = (float)((dist_size*8.0) / Source_size);
+	float bpp = (float)((dist_size * 8.0) / Source_size);
 	fwrite(dst_data, sizeof(unsigned char), dst_size, outFile);
 	fclose(outFile);
 	auto finish = chrono::high_resolution_clock::now();
@@ -519,9 +510,9 @@ void encode_live_jpeg(
 	cout << "\tTotal Frames Encoded        : " << output_frame_count << endl;
 	cout << "\tOutput File Name            : " << out_file_name << endl;
 	cout << "\tAPP11 Markers               : " << (sos_pool.size() / 65000) + 1 << endl;
-	cout << "\tOutput File Size            : " << dst_size << " bytes " << endl;
+	cout << "\tOutput File Size            : " << dst_size << " Bytes " << endl;
 	cout << "\tbit per pixels              : " << bpp << endl;
-	cout << "\tEncoding Time               : " << elapsed / std::chrono::milliseconds(1) / 1000.0  << " sec" << endl;
+	cout << "\tEncoding Time               : " << elapsed / std::chrono::milliseconds(1) / 1000.0 << " sec" << endl;
 
 	auto end_time = chrono::system_clock::to_time_t(chrono::system_clock::now());
 	float time_elapsed = elapsed / std::chrono::milliseconds(1) / 1000.0;
@@ -532,7 +523,7 @@ void encode_live_jpeg(
 		fprintf(resulttxt, "\tTotal frames encoded        : %d\n", output_frame_count);
 		fprintf(resulttxt, "\tOutput File Name            : %s\n", out_file_name);
 		fprintf(resulttxt, "\tAPP11 Markers               : %d\n", (sos_pool.size() / 65000) + 1);
-		fprintf(resulttxt, "\tOutput File Size              : %d bytes.\n", dst_size);
+		fprintf(resulttxt, "\tOutput File Size              : %d Bytes.\n", dst_size);
 		fprintf(resulttxt, "\tbit per pixels                 : %f bits per pixel.\n", bpp);
 		fprintf(resulttxt, "\tEncoding Time               : %f sec.\n", time_elapsed);
 		fprintf(resulttxt, "End   Time                    : %s", str2);
@@ -544,10 +535,10 @@ void encode_live_jpeg(
 }
 
 //
-//void extract_curr_sos_data(byte* jpeg_data, unsigned int jpegsize, byte** sos_data, unsigned * sos_size) {
+//void extract_curr_sos_data(Byte* jpeg_data, unsigned int jpegsize, Byte** sos_data, unsigned * sos_size) {
 //	int header_len = 0;
 //
-//	byte* jpeg_buf = jpeg_data;
+//	Byte* jpeg_buf = jpeg_data;
 //	byte  m_ffd8 = sj_get_2byte(&jpeg_buf);
 //	header_len += 2;
 //	/*if (m_ffd8 != 0xFFD8)

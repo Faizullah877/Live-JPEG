@@ -120,3 +120,48 @@ Source properties.
 	Source pixels Color Space   : YCbCr
 
 Error -> Failed to open source file. Name            : b5_q95.jpg
+******************************************************************
+Running                       : C:\Users\FAIZULLAH\source\repos\Faizullah877\live_jpeg_v02\bin\x64\Debug\live_jpeg_v02.exe
+Start Time                    : Wed May  4 17:05:06 2022
+
+Process ====>>>>>> Live_jpeg decoding.
+
+Source properties.
+	Source File Name             : car_gmis_q90_subsamp420_arith.jpg
+	Source pixels Color Space   : RGB
+Output Properties.
+	Total frames decoded        : 9
+	Output File Name             : car_gmis_q90_subsamp420_arith_rec.yuv
+	Decoding Time                : 1.272000 sec.
+End   Time                    : Wed May  4 17:05:07 2022
+***************************************************************
+******************************************************************
+Running                       : C:\Users\FAIZULLAH\source\repos\Faizullah877\live_jpeg_v02\bin\x64\Release\live_jpeg_v02.exe
+Start Time                    : Wed May  4 17:13:01 2022
+
+Process ====>>>>>> Live_jpeg decoding.
+
+Source properties.
+	Source File Name             : car_gmis_q90_subsamp420_arith.jpg
+	Source pixels Color Space   : RGB
+Output Properties.
+	Total frames decoded        : 9
+	Output File Name             : car_gmis_q90_subsamp420_arith_rec.yuv
+	Decoding Time                : 0.945000 sec.
+End   Time                    : Wed May  4 17:13:02 2022
+***************************************************************
+******************************************************************
+Running                       : C:\Users\FAIZULLAH\source\repos\Faizullah877\live_jpeg_v02\bin\x64\Release\live_jpeg_v02.exe
+Start Time                    : Wed May  4 17:16:39 2022
+
+Process ====>>>>>> Live_jpeg decoding.
+
+Source properties.
+	Source File Name             : car_gmis_q90_subsamp420_arith.jpg
+	Source pixels Color Space   : RGB
+Output Properties.
+	Total frames decoded        : 9
+	Output File Name             : car_gmis_q90_subsamp420_arith_rec.yuv
+	Decoding Time                : 0.955000 sec.
+End   Time                    : Wed May  4 17:16:40 2022
+***************************************************************
