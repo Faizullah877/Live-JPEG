@@ -3,7 +3,7 @@
 #include <chrono>
 #define pixel_range 200
 using namespace std;
-void find_frame_psnr444I(byte* ref_frame_data, byte* input_frame_data, uint width, uint height, uint frame_size, double* psnrC0, double* psnrC1, double* psnrC2) {
+void find_frame_psnr444I(Byte* ref_frame_data, Byte* input_frame_data, uint width, uint height, uint frame_size, double* psnrC0, double* psnrC1, double* psnrC2) {
 	uint comp_size = width * height;
 	double tmp_mseC0f = 0.0;
 	double tmp_mseC1f = 0.0;
@@ -114,8 +114,8 @@ void find_psnr(
 		return;
 	}
 
-	byte* ref_frame_data = new byte[frame_size];
-	byte* input_frame_data = new byte[frame_size];
+	Byte* ref_frame_data = new Byte[frame_size];
+	Byte* input_frame_data = new Byte[frame_size];
 
 	double psnrC0 = 0; // C0 = component 0 (Y or R)
 	double psnrC1 = 0;

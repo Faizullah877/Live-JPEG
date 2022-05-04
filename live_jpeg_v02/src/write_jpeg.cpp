@@ -1,7 +1,7 @@
 #include "write_jpeg.h"
 
 
-	void create_jumd_buf(byte** jumd_buf, uint* jumd_buf_size, sj_jumbf_super_box* super_box)
+	void create_jumd_buf(Byte** jumd_buf, uint* jumd_buf_size, sj_jumbf_super_box* super_box)
 	{
 
 		sj_jumbf_box_ptr next_box = super_box->next_box;
@@ -12,9 +12,9 @@
 			{
 				sj_jumbf_desc_box_ptr desc_box = (sj_jumbf_desc_box_ptr)(next_box);
 				//length
-				*jumd_buf = new byte[desc_box->length];
+				*jumd_buf = new Byte[desc_box->length];
 				*jumd_buf_size = desc_box->length;
-				byte* jumd_buf_position = *jumd_buf;
+				Byte* jumd_buf_position = *jumd_buf;
 				emit_4byte(&jumd_buf_position, desc_box->length);
 				//box type
 				emit_4byte(&jumd_buf_position, desc_box->box_type);
@@ -78,7 +78,7 @@
 		{
 			return false;
 		}
-		byte* jumd_buf;
+		Byte* jumd_buf;
 		uint jumd_buf_size;
 
 		create_jumd_buf(&jumd_buf, &jumd_buf_size, sos_super_box);
@@ -86,7 +86,7 @@
 		uint no_of_app11_markers_req = sos_super_box->length / amount_per_marker; // one extra is needed for remainder
 		no_of_app11_markers_req++;
 
-		byte* codestream = NULL;
+		Byte* codestream = NULL;
 		uint codestream_size = 0;
 		sj_jumbf_box_ptr next_box = sos_super_box->next_box;
 		
@@ -129,7 +129,7 @@
 
 
 
-		byte* marker_buf;
+		Byte* marker_buf;
 		uint marker_size = 0;
 		bool meet_DQT = false;
 		bool meet_EOI = false;
@@ -292,7 +292,7 @@
 		{
 			return false;
 		}
-		byte* jumd_buf;
+		Byte* jumd_buf;
 		uint jumd_buf_size;
 
 		create_jumd_buf(&jumd_buf, &jumd_buf_size, super_box);
@@ -306,7 +306,7 @@
 
 
 
-		byte* codestream = NULL;
+		Byte* codestream = NULL;
 		uint codestream_size = 0;
 		sj_jumbf_box_ptr next_box = super_box->next_box;
 
@@ -341,7 +341,7 @@
 
 
 
-		byte* marker_buf;
+		Byte* marker_buf;
 		uint marker_size = 0;
 		bool meet_DQT = false;
 		bool meet_EOI = false;

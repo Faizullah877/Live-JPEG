@@ -4,7 +4,7 @@ using namespace std;
 
 	static uint previos_Z = 0;
 	static uint previous_Z_sos = 0;
-	bool isJthBitSet_1(byte n, int j)
+	bool isJthBitSet_1(Byte n, int j)
 	{
 		if ((n >> (j - 1)) & 1)
 			return true;
@@ -13,14 +13,14 @@ using namespace std;
 	}
 
 
-	void extract_sosL_box(byte* fdata, uint size, byte** sosL_array, uint* sosL_payload_len) {
-		byte* data = fdata;
+	void extract_sosL_box(Byte* fdata, uint size, Byte** sosL_array, uint* sosL_payload_len) {
+		Byte* data = fdata;
 		sj_jumbf_sos_lengths_box_ptr sosL_box;
 		sosL_box = (sj_jumbf_sos_lengths_box_ptr)malloc(sizeof(sj_jumbf_sos_lengths_box));
 		memset(sosL_box, 0, sizeof(sj_jumbf_sos_lengths_box));
-		vector<byte> sosL_payload;
-		byte last = sj_get_byte(&data);
-		byte current = sj_get_byte(&data);
+		vector<Byte> sosL_payload;
+		Byte last = sj_get_byte(&data);
+		Byte current = sj_get_byte(&data);
 		if (last != 0xFF || current != M_SOI) {
 			cout << "Image is not JPEG" << endl;
 			return;
@@ -46,7 +46,7 @@ using namespace std;
 				app11_counter++;
 				//cout << "APP11 Marker No : " << app11_counter << endl;
 				int len = sj_get_2byte(&data);
-				byte* app11_data = data - 4;
+				Byte* app11_data = data - 4;
 				readAPP11_4sosL(app11_data, sosL_payload, sosL_box);
 				data += (len - 2);
 			}
@@ -66,12 +66,12 @@ using namespace std;
 			last = sj_get_byte(&data);
 			current = sj_get_byte(&data);
 		}
-		*sosL_array = new byte[sosL_payload.size()];
+		*sosL_array = new Byte[sosL_payload.size()];
 		*sosL_payload_len = sosL_payload.size();
 		memcpy(*sosL_array, &sosL_payload[0], sosL_payload.size());
 	}
 
-	void readAPP11_4sosL(byte* app11_data, vector<byte>& sosL_payload, sj_jumbf_sos_lengths_box_ptr sosL_box)
+	void readAPP11_4sosL(Byte* app11_data, vector<Byte>& sosL_payload, sj_jumbf_sos_lengths_box_ptr sosL_box)
 	{
 
 		unsigned char type_sosL[16] = { 0x65, 0x79, 0xD6, 0xFB, 0xDB, 0xA2, 0x44, 0x6B, 0xB2, 0xAC, 0x1B, 0x82, 0x66, 0x61, 0x69, 0x7a }; // faiz
@@ -98,7 +98,7 @@ using namespace std;
 		{
 			uint jumdlength = sj_get_4byte(&app11_data);
 			uint jumdtype = sj_get_4byte(&app11_data);
-			byte jumdID[16] = { 0 };
+			Byte jumdID[16] = { 0 };
 			for (uint k = 0; k < 16; k++)
 				jumdID[k] = sj_get_byte(&app11_data);
 
@@ -112,7 +112,7 @@ using namespace std;
 				}
 			}
 
-			byte toggles = sj_get_byte(&app11_data);
+			Byte toggles = sj_get_byte(&app11_data);
 			bool label_present = isJthBitSet_1(toggles, 2);
 			bool ID_present = isJthBitSet_1(toggles, 3);
 			bool Sign_present = isJthBitSet_1(toggles, 4);
@@ -160,14 +160,14 @@ using namespace std;
 	}
 
 
-	void extract_contiguous_cs_box(byte* data, uint size, byte** dataa, double* size1) {
+	void extract_contiguous_cs_box(Byte* data, uint size, Byte** dataa, double* size1) {
 
 		sj_jumbf_contiguous_codestream_box_ptr jp2c_box;
 		jp2c_box = (sj_jumbf_contiguous_codestream_box_ptr)malloc(sizeof(sj_jumbf_contiguous_codestream_box));
 		memset(jp2c_box, 0, sizeof(sj_jumbf_contiguous_codestream_box));
-		vector<byte> codestream_data; ///concatenated
-		byte last = sj_get_byte(&data);
-		byte current = sj_get_byte(&data);
+		vector<Byte> codestream_data; ///concatenated
+		Byte last = sj_get_byte(&data);
+		Byte current = sj_get_byte(&data);
 		if (last != 0xFF || current != M_SOI) {
 			cout << "Image is not JPEG" << endl;
 			return;
@@ -193,7 +193,7 @@ using namespace std;
 				app11_counter++;
 				//cout << "APP11 Marker No : " << app11_counter << endl;
 				int len = sj_get_2byte(&data);
-				byte* app11_data = data - 4;
+				Byte* app11_data = data - 4;
 				readAPP11_f(app11_data, codestream_data, jp2c_box);
 				data += (len - 2);
 			}
@@ -213,7 +213,7 @@ using namespace std;
 			last = sj_get_byte(&data);
 			current = sj_get_byte(&data);
 		}
-		*dataa = new byte[codestream_data.size()];
+		*dataa = new Byte[codestream_data.size()];
 		*size1 = codestream_data.size();
 		memcpy(*dataa, &codestream_data[0], codestream_data.size());
 		//jp2c_box->codestream = codestream_data.data();
@@ -224,7 +224,7 @@ using namespace std;
 
 	}
 
-	void readAPP11_f(byte* app11_data, vector<byte>& codestream_data, sj_jumbf_contiguous_codestream_box_ptr codestream_box)
+	void readAPP11_f(Byte* app11_data, vector<Byte>& codestream_data, sj_jumbf_contiguous_codestream_box_ptr codestream_box)
 	{
 
 		uint marker = sj_get_2byte(&app11_data);
@@ -250,7 +250,7 @@ using namespace std;
 		{
 			uint jumdlength = sj_get_4byte(&app11_data);
 			uint jumdtype = sj_get_4byte(&app11_data);
-			byte jumdID[16] = { 0 };
+			Byte jumdID[16] = { 0 };
 			for (uint k = 0; k < 16; k++)
 				jumdID[k] = sj_get_byte(&app11_data);
 
@@ -264,7 +264,7 @@ using namespace std;
 				}
 			}
 
-			byte toggles = sj_get_byte(&app11_data);
+			Byte toggles = sj_get_byte(&app11_data);
 			bool label_present = isJthBitSet_1(toggles, 2);
 			bool ID_present = isJthBitSet_1(toggles, 3);
 			bool Sign_present = isJthBitSet_1(toggles, 4);

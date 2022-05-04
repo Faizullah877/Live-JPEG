@@ -1596,3 +1596,81 @@ Output Properties.
 End   Time                    : Sat Jul  4 17:59:02 2020
 ***************************************************************
 
+******************************************************************
+Running                       : C:\Users\FAIZULLAH\source\repos\Faizullah877\live_jpeg_v02\bin\x64\Debug\live_jpeg_v02.exe
+Start Time                    : Wed May  4 17:03:37 2022
+
+Process ====>>>>>> Live_jpeg Encoding.
+
+Source properties.
+	Source File Name             : E:\GMIS_Dataset_Simple\Multiple_images_for_compositing_higher_quality_image\multi_exposure_images\car
+	Source pixels Color Space   : RGB
+Encoding Paramenters.
+	Subsampling                    : 420
+	Quality                            : 90
+	Entropy Encoding Scheme     : Arithmetic
+Output Properties.
+	Total frames encoded        : 9
+	Output File Name            : car_gmis_q90_subsamp420_arith.jpg
+	APP11 Markers               : 49
+	Output File Size              : 3314685 Bytes.
+	bit per pixels                 : 1.420904 bits per pixel.
+	Encoding Time               : 1.950000 sec.
+End   Time                    : Wed May  4 17:03:39 2022
+***************************************************************
+
+******************************************************************
+Running                       : C:\Users\FAIZULLAH\source\repos\Faizullah877\live_jpeg_v02\bin\x64\Release\live_jpeg_v02.exe
+Start Time                    : Wed May  4 17:17:36 2022
+
+Process ====>>>>>> Live_jpeg Encoding.
+
+Source properties.
+	Source File Name             : E:\GMIS_Dataset_Simple\Multiple_images_for_compositing_higher_quality_image\multi_exposure_images\car
+	Source Frames Width         : 1920
+	Source Frames Height        : 1080
+	Source pixels Color Space   : RGB
+Encoding Paramenters.
+	Subsampling                    : 420
+	Quality                            : 90
+	Entropy Encoding Scheme     : Arithmetic
+	Total input Frames          : 9
+	Frames to encode..          : 9
+Output Properties.
+	Total frames encoded        : 9
+	Output File Name            : car_gmis_q90_subsamp420_arith.jpg
+	APP11 Markers               : 49
+	Output File Size              : 3314685 Bytes.
+	bit per pixels                 : 1.420904 bits per pixel.
+	Encoding Time               : 1.787000 sec.
+End   Time                    : Wed May  4 17:17:38 2022
+***************************************************************
+
+******************************************************************
+Running                       : C:\Users\FAIZULLAH\source\repos\Faizullah877\live_jpeg_v02\bin\x64\Release\live_jpeg_v02.exe
+Start Time                    : Wed May  4 17:22:20 2022
+
+Process ====>>>>>> Live_jpeg Encoding.
+
+Source properties.
+	Source File Name             : E:\GMIS_Dataset_Simple\Multiple_images_for_compositing_higher_quality_image\multi_exposure_images\car
+	Source Frames Width         : 1920
+	Source Frames Height        : 1080
+	Source pixels Color Space   : RGB
+Encoding Paramenters.
+	Subsampling                    : 420
+	Quality                            : 90
+	Entropy Encoding Scheme     : Arithmetic
+	Total input Frames          : 9
+	Frames to encode..          : 9
+Output Properties.
+	Total frames encoded        : 9
+	Output File Name            : car_gmis_q90_subsamp420_arith.jpg
+	APP11 Markers               : 49
+	Output File Size              : 3314685 Bytes.
+	bit per pixels                 : 1.420904 bits per pixel.
+	ISBR                           : 0.224495 
+	Encoding Time               : 1.741000 sec.
+End   Time                    : Wed May  4 17:22:22 2022
+***************************************************************
+

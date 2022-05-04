@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 
-typedef unsigned char byte;
+typedef unsigned char Byte;
 typedef unsigned int uint;
 #define MAX_PATH (256)
 void print_usage();
@@ -166,7 +166,7 @@ typedef struct {
 class DataBuffer {
 public:
     void* owner;
-    byte* data;
+    Byte* data;
     void* additional_data;
     unsigned int    size; // size in a byte type
 
@@ -237,11 +237,11 @@ typedef struct {
 #define MAX_VP 10
 
 	struct ColorComponent {
-		byte horizontalSamplingFactor = 1;
-		byte verticalSamplingFactor = 1;
-		byte quantizationTableID = 0;
-		byte huffmanDCTableID = 0;
-		byte huffmanACTableID = 0;
+		Byte horizontalSamplingFactor = 1;
+		Byte verticalSamplingFactor = 1;
+		Byte quantizationTableID = 0;
+		Byte huffmanDCTableID = 0;
+		Byte huffmanACTableID = 0;
 		bool used = false;
 	};
 
@@ -292,7 +292,7 @@ typedef struct {
 		std::string model;
 	};
 	struct Header {
-		byte frameType = 0;
+		Byte frameType = 0;
 		uint height = 0;
 		uint width = 0;
 		short numComponents = 0;
@@ -328,10 +328,11 @@ typedef struct {
 	long sj_get_4byte(unsigned char** buf);
 
 
-	void decodeIFD_IIfield(byte** buf, Header* header, unsigned char* TIFF_data);
-	void decodeIFD_MMfield(byte** buf, Header* header, unsigned char* TIFF_data);
-	void copy_jpeg_header(byte* image_data, uint img_size, byte** header_buf, uint* header_size);
-	Header* read_image_metadata(byte* fdata, uint fsize);
+	void decodeIFD_IIfield(Byte** buf, Header* header, unsigned char* TIFF_data);
+	void decodeIFD_MMfield(Byte** buf, Header* header, unsigned char* TIFF_data);
+	void copy_jpeg_header(Byte* image_data, uint img_size, Byte** header_buf, uint* header_size);
+	Header* read_image_metadata(Byte* fdata, uint fsize);
 
+	void ReadBytestream2(const char* InputFile, DataBuffer* pBuffer);
 	
 

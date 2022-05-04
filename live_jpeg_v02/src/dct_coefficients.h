@@ -7,8 +7,8 @@
 #include <jpeg/include/jerror.h>
 
 	void extractCoefficients_f(j_decompress_ptr srcinfo, jvirt_barray_ptr* src_coef_arrays, short** pCoeffBuffer);
-	void get_coefficients_f(byte* data, uint size, HANDLE_JPEG& hjpeg, short* coeff_buffer);
-	short* get_coefficients1(byte* data, uint size, HANDLE_JPEG& hjpeg, int* coeff_buf_size);
+	void get_coefficients_f(Byte* data, uint size, HANDLE_JPEG& hjpeg, short* coeff_buffer);
+	short* get_coefficients1(Byte* data, uint size, HANDLE_JPEG& hjpeg, int* coeff_buf_size);
 
 	int extractCoefficients1(j_decompress_ptr srcinfo, jvirt_barray_ptr* src_coef_arrays, short** pCoeffBuffer);
 

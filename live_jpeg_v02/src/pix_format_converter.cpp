@@ -1,9 +1,9 @@
 #include "pix_format_converter.h"
 
 
-void convert_yuv444p_to_yuv444I(byte* rawFrameData, uint rawFrameSize, uint width, uint height) {
+void convert_yuv444p_to_yuv444I(Byte* rawFrameData, uint rawFrameSize, uint width, uint height) {
 
-	byte* odata = new byte[rawFrameSize];
+	Byte* odata = new Byte[rawFrameSize];
 	for (int i = 0; i < rawFrameSize; ++i)
 	{
 		if (i % 3 == 0) odata[i] = rawFrameData[i / 3];
@@ -17,8 +17,8 @@ void convert_yuv444p_to_yuv444I(byte* rawFrameData, uint rawFrameSize, uint widt
 }
 
 
-void convert_yuv444I_to_yuv444p(byte* rawFrameData, uint rawFrameSize, uint width, uint height) {
-	byte* odata = new byte[rawFrameSize];
+void convert_yuv444I_to_yuv444p(Byte* rawFrameData, uint rawFrameSize, uint width, uint height) {
+	Byte* odata = new Byte[rawFrameSize];
 	for (int i = 0; i < rawFrameSize; ++i)
 	{
 		if (i % 3 == 0) odata[i / 3] = rawFrameData[i];
@@ -28,7 +28,7 @@ void convert_yuv444I_to_yuv444p(byte* rawFrameData, uint rawFrameSize, uint widt
 	memcpy(rawFrameData, odata, rawFrameSize);
 	delete[] odata;
 }
-void convert_420planer_to_444Interleave(byte* inDatabuffer, uint outDatabuffer) {
+void convert_420planer_to_444Interleave(Byte* inDatabuffer, uint outDatabuffer) {
 	//if (inDatabuffer->data == NULL) cout << "empty input buffer " << endl;
 	//if (inDatabuffer->info.width == 0 || inDatabuffer->info.height == 0) cout << "Width or height not correct" << endl;
 	//int inframeSize = inDatabuffer->info.width * inDatabuffer->info.height * 1.5;

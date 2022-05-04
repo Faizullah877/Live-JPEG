@@ -1,5 +1,6 @@
 #include "Header.h"
 #include "Box.h"
+#include <fstream>
 #include <vector>
 using namespace std;
 
@@ -11,9 +12,10 @@ void print_usage()
 {
 	printf("Usage: live_jpeg_v02.exe <options>\n");
 	printf("Options: \n");
+	printf("    -t          work = encode/decode.\n");
 	printf("    -i          Source File name            (max 255 characters).\n");
+	printf("    -f          Source Folder name containing .jpg images     (max 255 characters).\n");
 	printf("    -o          Output filename             (max 255 characters).\n");
-	//printf("    -r          Reference filename          (max 255 characters).\n");
 	printf("    -isf        Source samples packing format      (444P, 444I).\n");
 	printf("    -osf        Output samples packing format      (444P, 444I).\n");
 	printf("    -if         Source frame count.\n");
@@ -26,10 +28,29 @@ void print_usage()
 	printf("    -wsf        Write each frame as seperate jpg file (value 0 or 1).\n");
 	printf("    -wdf        Write each Difference frame as seperate jpg file (value 0 or 1).\n");
 	printf("    -arith      Entropy Encoding Scheme (arithmetic = 1) default is huffman.\n");
-	//printf("    -t          work = find psnr (value = psnr).\n");
 	printf("\n");
 	return;
 	//exit(1);
+}
+void ReadBytestream2(const char* InputFile, DataBuffer* pBuffer) {
+	std::ifstream jpg(InputFile, std::ifstream::binary);
+	if (jpg) {
+		// get length of file:
+		jpg.seekg(0, jpg.end);
+		unsigned long int length = jpg.tellg();
+		jpg.seekg(0, jpg.beg);
+		//cout << "File size is : " << length << endl;
+		char* buffer = new char[length];
+		jpg.read(buffer, length);
+		if (jpg) {
+			//std::cout << "all characters read successfully.";
+			pBuffer->data = (unsigned char*)buffer;
+			pBuffer->size = length;
+		}
+		else
+			std::cout << "error: only " << jpg.gcount() << " could be read from input file";
+		jpg.close();
+	}
 }
 unsigned int sj_get_byte(unsigned char** buf)
 /* Read next input byte; we do not support suspension in this module. */
@@ -85,7 +106,7 @@ long get_8IIbyte(unsigned char** buf)
 	return val1 + (val2 << 32);
 }
 
-bool isKthBitSet_1(byte n, int k)
+bool isKthBitSet_1(Byte n, int k)
 {
 	if ((n >> (k - 1)) & 1)
 		return true;
@@ -93,7 +114,7 @@ bool isKthBitSet_1(byte n, int k)
 		return false;
 }
 
-void decodeIFD_IIfield(byte** buf, Header* header, unsigned char* TIFF_data) {
+void decodeIFD_IIfield(Byte** buf, Header* header, unsigned char* TIFF_data) {
 	int tag = sj_get_2IIbyte(buf);
 	int type = sj_get_2IIbyte(buf);
 	uint count = sj_get_4IIbyte(buf);
@@ -101,7 +122,7 @@ void decodeIFD_IIfield(byte** buf, Header* header, unsigned char* TIFF_data) {
 	if (tag == 0x010F)
 	{
 		//std::cout << "\nCamera Make tag is present in Exif\n";
-		byte* make = new byte[count + 1];
+		Byte* make = new Byte[count + 1];
 		for (int i = 0; i < count; i++)
 		{
 			make[i] = TIFF_data[i + offset];
@@ -111,7 +132,7 @@ void decodeIFD_IIfield(byte** buf, Header* header, unsigned char* TIFF_data) {
 	}
 	else if (tag == 0x0110) {
 		//std::cout << "\nCamera Model tag is present in Exif";
-		byte* model = new byte[count + 1];
+		Byte* model = new Byte[count + 1];
 		for (int i = 0; i < count; i++)
 		{
 			model[i] = TIFF_data[i + offset];
@@ -125,7 +146,7 @@ void decodeIFD_IIfield(byte** buf, Header* header, unsigned char* TIFF_data) {
 	}
 }
 
-void decodeIFD_MMfield(byte** buf, Header* header, unsigned char* TIFF_data) {
+void decodeIFD_MMfield(Byte** buf, Header* header, unsigned char* TIFF_data) {
 	int tag = sj_get_2byte(buf);
 	int type = sj_get_2byte(buf);
 	int count = sj_get_4byte(buf);
@@ -133,7 +154,7 @@ void decodeIFD_MMfield(byte** buf, Header* header, unsigned char* TIFF_data) {
 	if (tag == 0x010F)
 	{
 		//std::cout << "\nCamera Make tag is present in Exif\n";
-		byte* make = new byte[count + 1];
+		Byte* make = new Byte[count + 1];
 		for (int i = 0; i < count; i++)
 		{
 			make[i] = TIFF_data[i + offset];
@@ -143,7 +164,7 @@ void decodeIFD_MMfield(byte** buf, Header* header, unsigned char* TIFF_data) {
 	}
 	else if (tag == 0x0110) {
 		//std::cout << "\nCamera Model tag is present in Exif";
-		byte* model = new byte[count + 1];
+		Byte* model = new Byte[count + 1];
 		for (int i = 0; i < count; i++)
 		{
 			model[i] = TIFF_data[i + offset];
@@ -154,14 +175,14 @@ void decodeIFD_MMfield(byte** buf, Header* header, unsigned char* TIFF_data) {
 	}
 }
 
-void readStartOfframe(byte* buf, Header* header)
+void readStartOfframe(Byte* buf, Header* header)
 {
 	//std::cout << "Reading SOF Marker\n";
 	if (header->numComponents != 0) {
 		//std::cout << "Error - Multiple SOFs detected\n";
 	}
 	unsigned int lenght = sj_get_2byte(&buf);
-	byte precision = sj_get_byte(&buf);
+	Byte precision = sj_get_byte(&buf);
 	if (precision != 8)
 	{
 		std::cout << "Error - Invalid precision " << (unsigned int)precision << '\n';
@@ -182,7 +203,7 @@ void readStartOfframe(byte* buf, Header* header)
 
 	for (unsigned int i = 0; i < header->numComponents; ++i)
 	{
-		byte componentID = sj_get_byte(&buf);
+		Byte componentID = sj_get_byte(&buf);
 		//component IDs are usually 1,2,3 but rarely can be seen as 0, 1, 2
 		// always force them into 1, 2, 3 for consistency
 		if (componentID == 0)
@@ -213,7 +234,7 @@ void readStartOfframe(byte* buf, Header* header)
 			//return;
 		}
 		component->used = true;
-		byte samplingFactor = sj_get_byte(&buf);
+		Byte samplingFactor = sj_get_byte(&buf);
 		component->horizontalSamplingFactor = samplingFactor >> 4;
 		component->verticalSamplingFactor = samplingFactor & 0x0F;
 
@@ -231,7 +252,7 @@ void readStartOfframe(byte* buf, Header* header)
 
 }
 
-bool readAPP1Exif(byte** buf, Header* header, int length)
+bool readAPP1Exif(Byte** buf, Header* header, int length)
 {
 	const int No_of_Cameras = 17;
 	std::string camera_model[No_of_Cameras] = {
@@ -254,9 +275,9 @@ bool readAPP1Exif(byte** buf, Header* header, int length)
 		"Nexus 5X"
 	};
 	sj_get_2byte(buf); // two bytes after exif
-	byte* buf1 = *(buf);
+	Byte* buf1 = *(buf);
 	int TIFF_size = length - 6;
-	byte* TIFF_data = *buf;
+	Byte* TIFF_data = *buf;
 
 	int endianness = sj_get_2byte(buf);
 	if (endianness == 0x4949)
@@ -407,7 +428,7 @@ bool manipulateXMP_gpano(unsigned char* xmp_packet, Header* header)
 
 
 //decodes app1 Marker for GPano and Exif(Camera) metadata. 
-bool readAPP1(byte* app1ptr, Header* header)  // App1ptr is pointer to start of APP1 data
+bool readAPP1(Byte* app1ptr, Header* header)  // App1ptr is pointer to start of APP1 data
 {
 	int marker = sj_get_2byte(&app1ptr);
 	if (marker != 0xFFE1) {
@@ -427,7 +448,7 @@ bool readAPP1(byte* app1ptr, Header* header)  // App1ptr is pointer to start of 
 	{
 		for (int i = 4; i < 28; i++)
 		{
-			byte temp = sj_get_byte(&app1ptr);
+			Byte temp = sj_get_byte(&app1ptr);
 			if (temp != xmp_sign[i])
 			{
 				xmp_flag = false;
@@ -440,7 +461,7 @@ bool readAPP1(byte* app1ptr, Header* header)  // App1ptr is pointer to start of 
 		}
 		if (xmp_flag)
 		{
-			byte nullc = sj_get_byte(&app1ptr);
+			Byte nullc = sj_get_byte(&app1ptr);
 			xmp_packet = app1ptr;
 			manipulateXMP_gpano(xmp_packet, header);
 		}
@@ -735,7 +756,7 @@ void decodeJPEG360XML(string xmlpacket, Header* header) {
 }
 
 //this function decode app11 marker for JPEG360 Metadata JUMBF box
-bool readAPP11(byte* app11ptr, Header* header)
+bool readAPP11(Byte* app11ptr, Header* header)
 {
 	int marker = sj_get_2byte(&app11ptr);
 	if (marker != 0xFFEB) {
@@ -743,7 +764,7 @@ bool readAPP11(byte* app11ptr, Header* header)
 		return false;
 	}
 	unsigned char type_jpeg360[16] = { 0x78, 0x5F, 0x34, 0xB7, 0x5D, 0x4B, 0x47, 0x4C, 0xB8, 0x9F, 0x1D, 0x99, 0xE0, 0xE3, 0xA8, 0xDD };
-	byte* buf = app11ptr;
+	Byte* buf = app11ptr;
 	header->app11.APP11Flag = true;
 	header->app11.Le = sj_get_2byte(&buf);
 	header->app11.CI_dec = sj_get_2byte(&buf);
@@ -831,7 +852,7 @@ bool readAPP11(byte* app11ptr, Header* header)
 			header->xmlbox.data = new unsigned char[xml_L + 1];
 			for (int i = 0; i < xml_L; i++)
 			{
-				byte temp = sj_get_byte(&buf);
+				Byte temp = sj_get_byte(&buf);
 				if (temp != 0x00)
 					header->xmlbox.data[i] = temp;
 				else {
@@ -857,7 +878,7 @@ bool readAPP11(byte* app11ptr, Header* header)
 	return true;
 }
 
-Header* read_image_metadata(byte* fdata, uint fsize)//fdata = imagebytestream ...fsize = bytestream size
+Header* read_image_metadata(Byte* fdata, uint fsize)//fdata = imagebytestream ...fsize = bytestream size
 {
 	Header* header = new (std::nothrow) Header;
 	if (header == nullptr)
@@ -865,8 +886,8 @@ Header* read_image_metadata(byte* fdata, uint fsize)//fdata = imagebytestream ..
 		std::cout << "Error - Memory error\n";
 		return nullptr;
 	}
-	byte last = sj_get_byte(&fdata);
-	byte current = sj_get_byte(&fdata);
+	Byte last = sj_get_byte(&fdata);
+	Byte current = sj_get_byte(&fdata);
 	if (last != 0xFF || current != M_SOI) {
 		header->valid = false;;
 		cout << "Image is not JPEG" << endl;
@@ -907,14 +928,14 @@ Header* read_image_metadata(byte* fdata, uint fsize)//fdata = imagebytestream ..
 		}
 		else if (current == M_APP11)
 		{
-			byte* app11data = fdata - 2;
+			Byte* app11data = fdata - 2;
 			readAPP11(app11data, header);
 			uint length = sj_get_2byte(&fdata);
 			fdata += (length - 2);
 		}
 		else if (current == M_APP1)
 		{
-			byte* app1data = fdata - 2;
+			Byte* app1data = fdata - 2;
 			readAPP1(app1data, header);
 			uint length = sj_get_2byte(&fdata);
 			fdata += (length - 2);
@@ -929,7 +950,7 @@ Header* read_image_metadata(byte* fdata, uint fsize)//fdata = imagebytestream ..
 		else if (current == M_SOF0)
 		{
 			header->frameType = M_SOF0;
-			byte* sofData = fdata;
+			Byte* sofData = fdata;
 			readStartOfframe(sofData, header);
 			uint length = sj_get_2byte(&fdata);
 			fdata += (length - 2);
@@ -998,16 +1019,16 @@ Header* read_image_metadata(byte* fdata, uint fsize)//fdata = imagebytestream ..
 	return header;
 }
 
-void copy_jpeg_header(byte* image_data, uint img_size, byte** header_buf, uint* header_size) {
-	byte* fdata = image_data;
+void copy_jpeg_header(Byte* image_data, uint img_size, Byte** header_buf, uint* header_size) {
+	Byte* fdata = image_data;
 
-	vector<byte> header;
+	vector<Byte> header;
 	header.push_back(0xFF);
 	header.push_back(0xD8);
 
 
-	byte last = sj_get_byte(&fdata);
-	byte current = sj_get_byte(&fdata);
+	Byte last = sj_get_byte(&fdata);
+	Byte current = sj_get_byte(&fdata);
 	if (last != 0xFF || current != M_SOI) {
 		cout << "Image is not JPEG" << endl;
 		return;
@@ -1048,7 +1069,7 @@ void copy_jpeg_header(byte* image_data, uint img_size, byte** header_buf, uint* 
 		current = sj_get_byte(&fdata);
 	}
 	*header_size = header.size();
-	*header_buf = new byte[*header_size];
+	*header_buf = new Byte[*header_size];
 	memcpy(*header_buf, header.data(), *header_size);
 
 }

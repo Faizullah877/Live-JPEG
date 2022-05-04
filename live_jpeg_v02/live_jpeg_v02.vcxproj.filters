@@ -12,6 +12,7 @@
     <ClCompile Include="src\read_jumb.cpp" />
     <ClCompile Include="src\write_jpeg.cpp" />
     <ClCompile Include="src\live_jpeg_main.cpp" />
+    <ClCompile Include="src\encode_live_jpeg_folder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Box.h" />
@@ -24,5 +25,6 @@
     <ClInclude Include="src\psnr.h" />
     <ClInclude Include="src\read_jumb.h" />
     <ClInclude Include="src\write_jpeg.h" />
+    <ClInclude Include="src\encode_live_jpeg_folder.h" />
   </ItemGroup>
 </Project>

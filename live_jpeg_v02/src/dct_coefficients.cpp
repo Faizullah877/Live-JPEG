@@ -1,6 +1,6 @@
 #include "dct_coefficients.h"
 
-short* get_coefficients1(byte* data, uint size, HANDLE_JPEG& hjpeg, int* coeff_buf_size)
+short* get_coefficients1(Byte* data, uint size, HANDLE_JPEG& hjpeg, int* coeff_buf_size)
 {
 	struct jpeg_error_mgr jsrcerr;
 	hjpeg.srcinfo.err = jpeg_std_error(&jsrcerr);
@@ -15,7 +15,7 @@ short* get_coefficients1(byte* data, uint size, HANDLE_JPEG& hjpeg, int* coeff_b
 
 
 
-void get_coefficients_f(byte* data, uint size, HANDLE_JPEG& hjpeg, short* coeff_buffer)
+void get_coefficients_f(Byte* data, uint size, HANDLE_JPEG& hjpeg, short* coeff_buffer)
 {
 	struct jpeg_error_mgr jsrcerr;
 	hjpeg.srcinfo.err = jpeg_std_error(&jsrcerr);

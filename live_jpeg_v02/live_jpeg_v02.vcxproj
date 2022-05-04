@@ -24,6 +24,7 @@
     <ClCompile Include="src\dct_coefficients.cpp" />
     <ClCompile Include="src\decode_live_jpeg.cpp" />
     <ClCompile Include="src\encode_live_jpeg.cpp" />
+    <ClCompile Include="src\encode_live_jpeg_folder.cpp" />
     <ClCompile Include="src\Header.cpp" />
     <ClCompile Include="src\live_jpeg_main.cpp" />
     <ClCompile Include="src\pix_format_converter.cpp" />
@@ -37,6 +38,7 @@
     <ClInclude Include="src\dct_coefficients.h" />
     <ClInclude Include="src\decode_live_jpeg.h" />
     <ClInclude Include="src\encode_live_jpeg.h" />
+    <ClInclude Include="src\encode_live_jpeg_folder.h" />
     <ClInclude Include="src\Header.h" />
     <ClInclude Include="src\pix_format_converter.h" />
     <ClInclude Include="src\psnr.h" />
@@ -130,6 +132,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)live_jpeg_v02\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -147,6 +150,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)live_jpeg_v02\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -164,6 +168,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -181,6 +186,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
