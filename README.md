@@ -15,19 +15,21 @@ live_jpeg_v02.exe -i AI_Building_3840x1920_YUV444P_450f.yuv -o AI_Building_3840x
 Encoding Parameters:
 
 S. No	Argument		Argument description				Possible values				Default value
-1	-i			Input raw video file name			File should be .yuv, Frames packing should be interleaved or planner 444-pixel format		
-2	-o			Output file name. 				Must have .jpg extension		
-3	-isf			Input file packing format, Interleaved or planner? 444I, 444P, 				444I
-4	-if			No of frames in input file			0
-5	-of			No of frames user want to encode		Any number smaller than ‘-if’ value	0
-6	-w			Width in pixels of each input video frame		0
-7	-h			Height in pixels of each input video frame		0
-8	-q			Quality of each frame				0-100					95
-9	-pix_fmt		Input frames color space			RGB YUV 				RGB
-10	-wsf			Write each frame as separate JPEG file		1 or 0					0
-11	-wdf			Write each difference frame as separate JPEG file	0 or 1				0
-12	-sub_samp		Each frame encoding Subsampling format		420 444					420
-13	-arith	Enables Arithmetic entropy encoding for each frame		0 or 1					0
+1 -t   work = encode/decode.
+2	-i			Input raw video file name			File should be .yuv, Frames packing should be interleaved or planner 444-pixel format		
+3 -f   Source Folder name containing .jpg images     (max 255 characters).
+4	-o			Output file name. 				Must have .jpg extension		
+5	-isf			Input file packing format, Interleaved or planner? 444I, 444P, 				444I
+6	-if			No of frames in input file			0
+7	-of			No of frames user want to encode		Any number smaller than ‘-if’ value	0
+8	-w			Width in pixels of each input video frame		0
+9	-h			Height in pixels of each input video frame		0
+10	-q			Quality of each frame				0-100					95
+11	-pix_fmt		Input frames color space			RGB YUV 				RGB
+12	-wsf			Write each frame as separate JPEG file		1 or 0					0
+13	-wdf			Write each difference frame as separate JPEG file	0 or 1				0
+14	-sub_samp		Each frame encoding Subsampling format		420 444					420
+15	-arith	Enables Arithmetic entropy encoding for each frame		0 or 1					0
 
 
 
