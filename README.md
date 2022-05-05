@@ -16,17 +16,13 @@ live_jpeg_v02.exe -i AI_Building_3840x1920_YUV444P_450f.yuv -o AI_Building_3840x
 ------------------------------------
 ### Encoding Parameters:
 
-S. No	Argument		Argument description				Possible values				Default value
-
-1 -t   work = encode/decode.
-
-2	-i			Input raw video file name			File should be .yuv, Frames packing should be interleaved or planner 444-pixel format		
-
-3 -f   Source Folder name containing .jpg images     (max 255 characters).
-
-4	-o			Output file name. 				Must have .jpg extension		
-
-5	-isf			Input file packing format, Interleaved or planner? 444I, 444P, 				444I
+| S. No	| Argument	| 	Argument description	| 			Possible values		| 		Default value | 
+| ----- | -------- | --------------------- | ------------------- | --------------- | 
+| 1 | -t  |  work type | encode/decode | encode | 
+| 2	| -i		| 	Input raw .yuv video file name		| 	string (max 255 characters) with .yuv extension | input.yuv |   
+| 3 | -f  |  Source Folder name containing .jpg images | string (max 255 characters) | test | 
+| 4	| -o		| 	Output encoded file name. 				| string (max 255 characters) with .jpg extension		| output.jpg | 
+| 5	| -isf	| Input raw pixels packing | 444I for 444 interleaved,  444P for 444 planner | 444I | 
 
 6	-if			No of frames in input file			0
 
@@ -59,20 +55,14 @@ Decoding Parameters
 
 | S. No |	Argument	| Argument description	            | Possible values	| Default value |
 | ----- | -------- | -------------------------------- | --------------- | ------------- |
-| 1	    | -i	      | live-JPEG encoded .jpg file name | abc.jpg         | Null          |
-| 2     |	-o	      | decoded raw .yuv file name       | output.yuv      | Null          |
-| 3	    | -of	     | No of frames to decode	          | Any number <= total no of frames |	Total number of frames |
-| 4	| -wsf	| Write each frame as separate JPEG file	| 0/1 | 0 |  
-
-5	-wdf	Write each difference frame as separate JPEG file	
-
-6	-osf	Output file frame packing format	444I/444P	
-7	-pix_fmt	Output raw frames color space	RGB
-YUV	RGB
-8	-wsf	decode each frame as separate JPEG file	0
-1	0
-9	-wdf	Decode each difference frame as separate JPEG file	0
-1	0
+| 1     | -t       | work type                        | encode/decode   | encode        | 
+| 2    | -i	      | live-JPEG encoded .jpg file name | abc.jpg         | Null          |
+| 3     |	-o	      | decoded raw .yuv file name       | output.yuv      | Null          |
+| 4	    | -of	     | No of frames to decode	          | Any number <= total no of frames |	Total number of frames |
+| 5	| -wsf	| Write each frame as separate JPEG file	| 0/1 | 0 |  
+| 6	| -wdf	| Write each difference frame as separate JPEG file | 0/1 | 0 |  	
+| 7	| -osf	| Output pixels packing 	| 444I for 444 interleaved | 444P for 444 planner |  444I | 	
+| 8	| -pix_fmt	| Output color space	| RGB/YUV	| RGB | 
 
 
 Note: 
