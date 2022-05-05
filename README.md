@@ -57,13 +57,10 @@ live_jpeg_v02.exe -i AI_Building_3840x1920_YUV444P_450f_q75_420_huff.jpg -o De_A
 
 Decoding Parameters
 
-| S. No |	Argument	| Argument description	| Possible values	| Default value |
-
-| 1	| -i	| live-JPEG encoded .jpg file name | abc.jpg | Null |
-
-File should be .jpg		
-
-2*	-o	Output decoded raw file name.
+| S. No |	Argument	| Argument description	            | Possible values	| Default value |
+| ----- | -------- | -------------------------------- | --------------- | ------------- |
+| 1	    | -i	      | live-JPEG encoded .jpg file name | abc.jpg         | Null          |
+| 2     |	-o	      | decoded raw .yuv file name       | output.yuv      | Null          |
 
 Must have .yuv extension		
 
