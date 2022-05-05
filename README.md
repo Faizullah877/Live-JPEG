@@ -56,18 +56,24 @@ S. No	Argument		Argument description				Possible values				Default value
 live_jpeg_v02.exe -i AI_Building_3840x1920_YUV444P_450f_q75_420_huff.jpg -o De_AI_Building_3840x1920_YUV444P_450f.yuv -pix_fmt YUV -osf 444P
 
 Decoding Parameters
-S. No	Argument	Argument description	Possible values	Default value
-1*	-i	Input live-JPEG encoded file name
+
+| S. No |	Argument	| Argument description	| Possible values	| Default value |
+
+| 1	| -i	| live-JPEG encoded .jpg file name | abc.jpg | Null |
+
 File should be .jpg		
+
 2*	-o	Output decoded raw file name.
+
 Must have .yuv extension		
+
 3	-of	No of frames user want to decode	Any number smaller than total no of frames	Total number of frames
-4	-wsf	Write each frame as separate JPEG file	0
-1	0
-5	-wdf	Write each difference frame as separate JPEG file	0
-1	0
-6	-osf	Output file frame packing format	444I
-444P	444I
+
+4	-wsf	Write each frame as separate JPEG file	0/1
+
+5	-wdf	Write each difference frame as separate JPEG file	
+
+6	-osf	Output file frame packing format	444I/444P	
 7	-pix_fmt	Output raw frames color space	RGB
 YUV	RGB
 8	-wsf	decode each frame as separate JPEG file	0
