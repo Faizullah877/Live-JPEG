@@ -61,9 +61,8 @@ Decoding Parameters
 | ----- | -------- | -------------------------------- | --------------- | ------------- |
 | 1	    | -i	      | live-JPEG encoded .jpg file name | abc.jpg         | Null          |
 | 2     |	-o	      | decoded raw .yuv file name       | output.yuv      | Null          |
-| 3	    | -of	     | No of frames to decode	          | Any number smaller than total no of frames |	Total number of frames |
-
-4	-wsf	Write each frame as separate JPEG file	0/1
+| 3	    | -of	     | No of frames to decode	          | Any number <= total no of frames |	Total number of frames |
+| 4	| -wsf	| Write each frame as separate JPEG file	| 0/1 | 0 |  
 
 5	-wdf	Write each difference frame as separate JPEG file	
 
