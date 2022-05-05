@@ -1,4 +1,5 @@
 # live_jpeg_v02
+
 Live-JPEG is a video codec based on JPEG-1. Basic Concept is that the discrete cosine tranform (DCT) coefficients of next frame are subtracted from the DCT coeffieients of previous frame and then the resultant coefficients are encoded using entropy coding used same in JPEG. 
 ----------------------------
 ### Live-JPEG Command line Usage
@@ -38,14 +39,20 @@ S. No	Argument		Argument description				Possible values				Default value
 10	-q			Quality of each frame				0-100					95
 
 11	-pix_fmt		Input frames color space			RGB YUV 				RGB
+
 12	-wsf			Write each frame as separate JPEG file		1 or 0					0
+
 13	-wdf			Write each difference frame as separate JPEG file	0 or 1				0
+
 14	-sub_samp		Each frame encoding Subsampling format		420 444					420
+
 15	-arith	Enables Arithmetic entropy encoding for each frame		0 or 1					0
 
 
 
+
 ### Decoding Example
+
 live_jpeg_v02.exe -i AI_Building_3840x1920_YUV444P_450f_q75_420_huff.jpg -o De_AI_Building_3840x1920_YUV444P_450f.yuv -pix_fmt YUV -osf 444P
 
 Decoding Parameters
