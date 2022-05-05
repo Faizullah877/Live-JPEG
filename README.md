@@ -1,6 +1,7 @@
 # live_jpeg_v02
-This version of code is submitted to Professor Kwon. This is a Live-JPEG codec in working status. The last results presented in the lab meetings are generated using this executable
-Live-JPEG Command line Usage
+Live-JPEG is a video codec based on JPEG-1. Basic Concept is that the discrete cosine tranform (DCT) coefficients of next frame are subtracted from the DCT coeffieients of previous frame and then the resultant coefficients are encoded using entropy coding used same in JPEG. 
+----------------------------
+### Live-JPEG Command line Usage
  
 
 Encoding Example:
@@ -11,20 +12,31 @@ Live_jpeg_v02.exe -i input_file_name.yuv -o output_encoded_file_name.jpg -w 1234
 
 live_jpeg_v02.exe -i AI_Building_3840x1920_YUV444P_450f.yuv -o AI_Building_3840x1920_YUV444P_450f_q75_420_huff.jpg -w 3840 -h 1920 -isf 444P -pix_fmt YUV -if 450
 
-
-Encoding Parameters:
+------------------------------------
+### Encoding Parameters:
 
 S. No	Argument		Argument description				Possible values				Default value
+
 1 -t   work = encode/decode.
+
 2	-i			Input raw video file name			File should be .yuv, Frames packing should be interleaved or planner 444-pixel format		
+
 3 -f   Source Folder name containing .jpg images     (max 255 characters).
+
 4	-o			Output file name. 				Must have .jpg extension		
+
 5	-isf			Input file packing format, Interleaved or planner? 444I, 444P, 				444I
+
 6	-if			No of frames in input file			0
+
 7	-of			No of frames user want to encode		Any number smaller than ‘-if’ value	0
+
 8	-w			Width in pixels of each input video frame		0
+
 9	-h			Height in pixels of each input video frame		0
+
 10	-q			Quality of each frame				0-100					95
+
 11	-pix_fmt		Input frames color space			RGB YUV 				RGB
 12	-wsf			Write each frame as separate JPEG file		1 or 0					0
 13	-wdf			Write each difference frame as separate JPEG file	0 or 1				0
@@ -33,8 +45,9 @@ S. No	Argument		Argument description				Possible values				Default value
 
 
 
-Decoding Example
+### Decoding Example
 live_jpeg_v02.exe -i AI_Building_3840x1920_YUV444P_450f_q75_420_huff.jpg -o De_AI_Building_3840x1920_YUV444P_450f.yuv -pix_fmt YUV -osf 444P
+
 Decoding Parameters
 S. No	Argument	Argument description	Possible values	Default value
 1*	-i	Input live-JPEG encoded file name
