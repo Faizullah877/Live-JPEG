@@ -7,8 +7,11 @@ Live-JPEG is a video codec based on JPEG-1. Basic Concept is that the discrete c
 
 #### Encoding
 Example command:
+
 `Live_jpeg_v02.exe -i input_file_name.yuv -o output_encoded_file_name.jpg -w 1234 -h 1234 -q 75 -isf 444P -pix_fmt YUV -if 450`
+
 `Live_jpeg_v02.exe -i input_file_name.yuv -o output_encoded_file_name.jpg -w 1234 -h 1234 -q 75 -isf 444P -pix_fmt YUV -if 450 -of 10 -arith 1 -sub_samp 444`
+
 `live_jpeg_v02.exe -i AI_Building_3840x1920_YUV444P_450f.yuv -o AI_Building_3840x1920_YUV444P_450f_q75_420_huff.jpg -w 3840 -h 1920 -isf 444P -pix_fmt YUV -if 450`
 
 ------------------------------------
@@ -37,6 +40,7 @@ Example command:
 
 ### Decoding
 Example command
+
 `live_jpeg_v02.exe -i AI_Building_3840x1920_YUV444P_450f_q75_420_huff.jpg -o De_AI_Building_3840x1920_YUV444P_450f.yuv -pix_fmt YUV -osf 444P`
 
 #### Decoding Parameters
