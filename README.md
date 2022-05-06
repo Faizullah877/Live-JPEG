@@ -44,9 +44,9 @@ live_jpeg_v02.exe -f jpg_images_folder -o live_jpeg_enocoded_file.jpg -q 85 -ari
 
 ### Decoding
 Example command
-
-`live_jpeg_v02.exe -i AI_Building_3840x1920_YUV444P_450f_q75_420_huff.jpg -o De_AI_Building_3840x1920_YUV444P_450f.yuv -pix_fmt YUV -osf 444P`
-
+```
+live_jpeg_v02.exe -i AI_Building_3840x1920_YUV444P_450f_q75_420_huff.jpg -o De_AI_Building_3840x1920_YUV444P_450f.yuv -pix_fmt YUV -osf 444P
+```
 #### Decoding Parameters
 
 | S. No |	Argument	| Argument description	            | Possible values	| Default value |
