@@ -23,7 +23,7 @@ live_jpeg_v02.exe -f jpg_images_folder -o live_jpeg_enocoded_file.jpg -q 85 -ari
 
 | S. No	| Argument	| 	Argument description	| 			Possible values		| 		Default value | 
 | ----- | -------- | --------------------- | ------------------- | --------------- | 
-| 1 | `-t`  |  work type | encode/decode | encode | 
+| 1* | `-t`  |  work type | encode/decode | encode | 
 | 2	| `-i`		| 	Input raw `.yuv` video file name		| 	string (max 255 characters) with `.yuv` extension | `input.yuv` |   
 | 3 | `-f`  |  Source Folder name containing `.jpg` images | string (max 255 characters) | `test` | 
 | 4	| `-o`		| 	Output encoded file name. 				| string (max 255 characters) with .jpg extension		| `output.jpg` | 
