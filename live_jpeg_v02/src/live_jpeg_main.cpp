@@ -31,8 +31,8 @@ static const std::string opt_entropy_enc = "-arith";
 
 int main(int argc, char* argv[])
 {
-	char input_filename[MAX_PATH] = {};
-	char output_filename[MAX_PATH] = {};
+	char input_filename[MAX_PATH] = {"input.yuv"};
+	char output_filename[MAX_PATH] = {"test"};
 	int quality = 95;
 	uint width = 0;
 	uint height = 0;
