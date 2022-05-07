@@ -1,21 +1,21 @@
-# live_jpeg_v02
+# DPCMed-JPEG
 
-Live-JPEG is a video codec based on JPEG-1. Basic Concept is that the discrete cosine tranform (DCT) coefficients of next frame are subtracted from the DCT coeffieients of previous frame and then the resultant coefficients are encoded using entropy coding used same in JPEG. 
+DPCMed-JPEG is a video codec based on JPEG-1. Basic Concept is that the discrete cosine tranform (DCT) coefficients of next frame are subtracted from the DCT coeffieients of previous frame and then the resultant coefficients are encoded using entropy coding used same in JPEG. 
 ----------------------------
-### Live-JPEG Command line Usage
+### DPCMed-JPEG Command line Usage
  
 
 #### Encoding
 Example command:
 
 ```
-Live_jpeg_v02.exe -i input_file_name.yuv -o output_encoded_file_name.jpg -w 1234 -h 1234 -q 75 -isf 444P -pix_fmt YUV -if 450
+DPCMed_JPEG.exe -i input_file_name.yuv -o output_encoded_file_name.jpg -w 1234 -h 1234 -q 75 -isf 444P -pix_fmt YUV -if 450
 
-Live_jpeg_v02.exe -i input_file_name.yuv -o output_encoded_file_name.jpg -w 1234 -h 1234 -q 75 -isf 444P -pix_fmt YUV -if 450 -of 10 -arith 1 -sub_samp 444
+DPCMed_JPEG.exe -i input_file_name.yuv -o output_encoded_file_name.jpg -w 1234 -h 1234 -q 75 -isf 444P -pix_fmt YUV -if 450 -of 10 -arith 1 -sub_samp 444
 
-live_jpeg_v02.exe -i AI_Building_3840x1920_YUV444P_450f.yuv -o AI_Building_3840x1920_YUV444P_450f_q75_420_huff.jpg -w 3840 -h 1920 -isf 444P -pix_fmt YUV -if 450
+DPCMed_JPEG.exe -i AI_Building_3840x1920_YUV444P_450f.yuv -o AI_Building_3840x1920_YUV444P_450f_q75_420_huff.jpg -w 3840 -h 1920 -isf 444P -pix_fmt YUV -if 450
 
-live_jpeg_v02.exe -f jpg_images_folder -o live_jpeg_enocoded_file.jpg -q 85 -arith 1
+DPCMed_JPEG.exe -f jpg_images_folder -o DPCMed_JPEG_enocoded_file.jpg -q 85 -arith 1
 ```
 
 ------------------------------------
@@ -45,14 +45,14 @@ live_jpeg_v02.exe -f jpg_images_folder -o live_jpeg_enocoded_file.jpg -q 85 -ari
 ### Decoding
 Example command
 ```
-live_jpeg_v02.exe -i AI_Building_3840x1920_YUV444P_450f_q75_420_huff.jpg -o De_AI_Building_3840x1920_YUV444P_450f.yuv -pix_fmt YUV -osf 444P
+DPCMed_JPEG.exe -i AI_Building_3840x1920_YUV444P_450f_q75_420_huff.jpg -o De_AI_Building_3840x1920_YUV444P_450f.yuv -pix_fmt YUV -osf 444P
 ```
 #### Decoding Parameters
 
 | S. No |	Argument	| Argument description	            | Possible values	| Default value |
 | ----- | -------- | -------------------------------- | --------------- | ------------- |
 | 1     | `-t`       | work type                        | `encode`/`decode`   | `encode`        | 
-| 2     | `-i`	      | live-JPEG encoded .jpg file name | `abc.jpg`         | Null          |
+| 2     | `-i`	      | DPCMed_JPEG encoded .jpg file name | `abc.jpg`         | Null          |
 | 3     |	`-o`	      | decoded raw .yuv file name       | `output.yuv`      | Null          |
 | 4	    | `-of`	     | No of frames to decode	          | Any number <= total no of frames |	Total number of frames |
 | 5   	 | `-wsf`	    | Write each frame as separate JPEG file	| `0`/`1` | `0` |  
@@ -64,5 +64,5 @@ live_jpeg_v02.exe -i AI_Building_3840x1920_YUV444P_450f_q75_420_huff.jpg -o De_A
 Note: 
 1.	Some of the sample raw videos are \\210.107.229.81\shared\Faizullah\Sample_videos\Raw_Sample_Videos 
 2.	The program differentiates b/w the encoding and decoding process by input file name extension. If input file name extension is .yuv, encoding process will take place. If input file name extension is .jpg, Decoding will be processed.
-3.	The program saves its encoding history and log in a text file named as Live_jpeg_Encoding_history.txt created automatically in same directory as live_jpeg_v02.exe
-4.	Similarly decoding history is saved in Live_jpeg_Decoding_history.txt.
+3.	The program saves its encoding history and log in a text file named as DPCMed_JPEG_Encoding_history.txt created automatically in same directory as DPCMed_JPEG.exe
+4.	Similarly decoding history is saved in DPCMed_JPEG_Decoding_history.txt.
