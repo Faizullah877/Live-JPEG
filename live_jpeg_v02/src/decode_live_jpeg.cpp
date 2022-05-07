@@ -191,28 +191,16 @@ void ReadBytestream(FILE* fp, DataBuffer* pBuffer)
 
 void decode_live_jpeg(
 	char* executable_name,
-	const char* InputFile, 
-	const char* out_file_name, 
+	const char* InputFile,
+	const char* out_file_name,
 	bool ycbcr,
-	MEDIA_FORMAT output_format, 
-	bool wsf_flag, 
-	bool wdf_flag
-) {
+	MEDIA_FORMAT output_format,
+	bool wsf_flag,
+	bool wdf_flag,
+	bool enable_log_file) {
 	auto start1 = chrono::high_resolution_clock::now();
 	auto start_time = chrono::system_clock::to_time_t(chrono::system_clock::now());
-	FILE* resulttxt;
-	errno_t err3 = fopen_s(&resulttxt, "Live_jpeg_Decoding_history.txt", "a+");
-	if (err3 == 0)
-	{
-		//printf("\Input File  : %s ", In_file_name);
-		//cout << endl;
-	}
-	else
-	{
-		printf("Live_jpeg_Decoding_history.txt  was not opened. ");
-		cout << endl;
-		//return;
-	}
+
 
 	printf("Running                       : %s\n", executable_name);
 	cout << "Process ====>>>>>> Live_jpeg Decoding" << endl;
@@ -221,19 +209,6 @@ void decode_live_jpeg(
 	cout << "Decoding Paramenters" << endl;
 	cout << "\tOutput pixels Color Space    : ";
 	if (ycbcr) cout << "YCbCr" << endl; else cout << "RGB" << endl;
-
-	if (err3 == 0) {
-		char str1[26];
-		ctime_s(str1, sizeof str1, &start_time);
-		fprintf(resulttxt, "******************************************************************\n");
-		fprintf(resulttxt, "Running                       : %s\n", executable_name);
-		fprintf(resulttxt, "Start Time                    : %s", str1);
-		fprintf(resulttxt, "\nProcess ====>>>>>> Live_jpeg decoding.\n");
-		fprintf(resulttxt, "\nSource properties.\n");
-		fprintf(resulttxt, "\tSource File Name             : %s\n", InputFile);
-		fprintf(resulttxt, "\tSource pixels Color Space   : ");
-		if (ycbcr) fprintf(resulttxt, "YCbCr\n"); else fprintf(resulttxt, "RGB\n");
-	}
 
 	DataBuffer* pBuffer = new DataBuffer();
 	DataBuffer* ptr = new DataBuffer();
@@ -246,7 +221,7 @@ void decode_live_jpeg(
 	}
 	else
 	{
-		fprintf(resulttxt, "\nError -> Failed to open source file. Name            : %s\n", InputFile);
+		//fprintf(resulttxt, "\nError -> Failed to open source file. Name            : %s\n", InputFile);
 		printf("The %s for Input was not opened ", InputFile);
 		cout << endl;
 		return;
@@ -264,7 +239,7 @@ void decode_live_jpeg(
 	}
 	else
 	{
-		fprintf(resulttxt, "\nError -> Failed to open output file. Name            : %s\n", out_file_name);
+		//fprintf(resulttxt, "\nError -> Failed to open output file. Name            : %s\n", out_file_name);
 		printf("The %s for Output was not opened ", out_file_name);
 		cout << endl;
 		return;
@@ -312,9 +287,9 @@ void decode_live_jpeg(
 	/*for (uint i = 0; i < 6; i++)
 		cout << "diff frame : " << i << "  sos size is : " << sosL_arr[i] << endl;*/
 
-	/*cout << "Total Frames present : " << sosL_arr[0];
-	for (uint i = 0; i < 10; ++i)
-		cout << "diff frame : " << i << " sos size is : " << sosL_arr[i + 1] << endl;*/
+		/*cout << "Total Frames present : " << sosL_arr[0];
+		for (uint i = 0; i < 10; ++i)
+			cout << "diff frame : " << i << " sos size is : " << sosL_arr[i + 1] << endl;*/
 
 	Byte* diff_sos_buf = NULL;
 	double diff_sos_buf_len;
@@ -322,12 +297,12 @@ void decode_live_jpeg(
 	Byte* sos_data = diff_sos_buf;
 
 
-	if(wdf_flag){
+	if (wdf_flag) {
 
 
 		Byte* sos_data1 = sos_data;
-		for (int i = 0; i < total_frames-1; ++i) {
-			FILE *fff;
+		for (int i = 0; i < total_frames - 1; ++i) {
+			FILE* fff;
 			errno_t err;
 			char fileN[100];
 			sprintf_s(fileN, 100, "Decodedd_diff_Frame_%d.jpg", i + 1);
@@ -387,7 +362,7 @@ void decode_live_jpeg(
 		//for (int i = 0; i < coeff_buf_size; i++) {
 		//	curr_frame_coeff[i] = PreviousCoeff[i] - diff_coeff[i];
 		//}
-		
+
 		for (uint c = 0; c < coeff_buf_size; c++) {
 			*(curr_frame_coeff + c) = *(PreviousCoeff + c) - *(diff_coeff + c);
 		}
@@ -435,18 +410,41 @@ void decode_live_jpeg(
 	cout << "\tOutput File Name             : " << out_file_name << endl;
 	auto finish = chrono::high_resolution_clock::now();
 	auto elapsed = finish - start1;
-	cout << "\tDecoding Time               : " << elapsed / std::chrono::milliseconds(1)/1000.0 << " sec" << endl;
+	cout << "\tDecoding Time               : " << elapsed / std::chrono::milliseconds(1) / 1000.0 << " sec" << endl;
 
 	auto end_time = chrono::system_clock::to_time_t(chrono::system_clock::now());
-	float time_elapsed = elapsed / std::chrono::milliseconds(1)/1000.0;
-	if (err3 == 0) {
-		char str2[26];
-		ctime_s(str2, sizeof str2, &end_time);
-		fprintf(resulttxt, "Output Properties.\n");
-		fprintf(resulttxt, "\tTotal frames decoded        : %d\n", frame_counter);
-		fprintf(resulttxt, "\tOutput File Name             : %s\n", out_file_name);
-		fprintf(resulttxt, "\tDecoding Time                : %f sec.\n", time_elapsed);
-		fprintf(resulttxt, "End   Time                    : %s", str2);
-		fprintf(resulttxt, "***************************************************************\n");
-	}
+	float time_elapsed = elapsed / std::chrono::milliseconds(1) / 1000.0;
+	if (enable_log_file){
+		FILE* resulttxt;
+		errno_t err3 = fopen_s(&resulttxt, "DPCMed_JPEG_Decoding_history.txt", "a+");
+
+		if (err3 == 0)
+		{
+			char str1[26];
+			ctime_s(str1, sizeof str1, &start_time);
+			fprintf(resulttxt, "******************************************************************\n");
+			fprintf(resulttxt, "Running                       : %s\n", executable_name);
+			fprintf(resulttxt, "Start Time                    : %s", str1);
+			fprintf(resulttxt, "\nProcess ====>>>>>> DPCMed-JPEG decoding.\n");
+			fprintf(resulttxt, "\nSource properties.\n");
+			fprintf(resulttxt, "\tSource File Name             : %s\n", InputFile);
+			fprintf(resulttxt, "\tSource pixels Color Space   : ");
+			if (ycbcr) fprintf(resulttxt, "YCbCr\n"); else fprintf(resulttxt, "RGB\n");
+			char str2[26];
+			ctime_s(str2, sizeof str2, &end_time);
+			fprintf(resulttxt, "Output Properties.\n");
+			fprintf(resulttxt, "\tTotal frames decoded        : %d\n", frame_counter);
+			fprintf(resulttxt, "\tOutput File Name             : %s\n", out_file_name);
+			fprintf(resulttxt, "\tDecoding Time                : %f sec.\n", time_elapsed);
+			fprintf(resulttxt, "End   Time                    : %s", str2);
+			fprintf(resulttxt, "***************************************************************\n");
+		}
+		else
+		{
+			printf("DPCMed_JPEG_Decoding_history.txt  was not opened. ");
+			cout << endl;
+			//return;
+		}
+}
+
 }

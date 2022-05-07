@@ -1,0 +1,30 @@
+******************************************************************
+Running                       : C:\Users\FAIZULLAH\source\repos\Faizullah877\live_jpeg_v02\bin\x64\Debug\DPCMed_JPEG.exe
+Start Time                    : Sat May  7 10:49:17 2022
+
+Process ====>>>>>> DPCMed-JPEG decoding.
+
+Source properties.
+	Source File Name             : abc_encoded.jpg
+	Source pixels Color Space   : RGB
+Output Properties.
+	Total frames decoded        : 9
+	Output File Name             : abc_decoded_1920x1080_444I_RGB.yuv
+	Decoding Time                : 0.800000 sec.
+End   Time                    : Sat May  7 10:49:18 2022
+***************************************************************
+******************************************************************
+Running                       : C:\Users\FAIZULLAH\source\repos\Faizullah877\live_jpeg_v02\bin\x64\Debug\DPCMed_JPEG.exe
+Start Time                    : Sat May  7 10:50:20 2022
+
+Process ====>>>>>> DPCMed-JPEG decoding.
+
+Source properties.
+	Source File Name             : abc_encoded.jpg
+	Source pixels Color Space   : YCbCr
+Output Properties.
+	Total frames decoded        : 9
+	Output File Name             : abc_decoded_1920x1080_444I_RGB.yuv
+	Decoding Time                : 0.778000 sec.
+End   Time                    : Sat May  7 10:50:21 2022
+***************************************************************

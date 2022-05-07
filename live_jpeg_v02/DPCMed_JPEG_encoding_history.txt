@@ -1,0 +1,81 @@
+******************************************************************
+Running                       : C:\Users\FAIZULLAH\source\repos\Faizullah877\live_jpeg_v02\bin\x64\Debug\DPCMed_JPEG.exe
+Start Time                    : Sat May  7 10:46:53 2022
+
+Process ====>>>>>> DPCMed-JPEG Encoding.
+
+Source properties.
+	Source File Name             : abc.yuv
+	Source Frames Width         : 1920
+	Source Frames Height        : 1080
+	Source pixels Color Space   : RGB
+Encoding Paramenters.
+	Subsampling                    : 420
+	Quality                            : 77
+	Entropy Encoding Scheme    : Huffman
+	Total input Frames          : 9
+	Frames to encode..          : 9
+Output Properties.
+	Total frames encoded        : 9
+	Output File Name            : abc_encoded.jpg
+	APP11 Markers               : 32
+	Output File Size              : 2208920 Bytes.
+	bit per pixels                 : 0.946896 bits per pixel.
+	Encoding Time               : 0.693000 sec.
+End   Time                    : Sat May  7 10:46:54 2022
+***************************************************************
+
+******************************************************************
+Running                       : C:\Users\FAIZULLAH\source\repos\Faizullah877\live_jpeg_v02\bin\x64\Debug\DPCMed_JPEG.exe
+Start Time                    : Sat May  7 10:47:43 2022
+
+Process ====>>>>>> DPCMed-JPEG Encoding.
+
+Source properties.
+	Source File Name            : abc.yuv
+	Source Frames Width         : 1920
+	Source Frames Height        : 1080
+	Source pixels Color Space   : RGB
+Encoding Paramenters.
+	Subsampling                 : 420
+	Quality                     : 77
+	Entropy Encoding Scheme   : Huffman
+	Total input Frames          : 9
+	Frames to encode..          : 9
+Output Properties.
+	Total frames encoded        : 9
+	Output File Name            : abc_encoded.jpg
+	APP11 Markers               : 32
+	Output File Size            : 2208920 Bytes.
+	bit per pixels              : 0.946896 bits per pixel.
+	Encoding Time               : 0.701000 sec.
+End   Time                    	: Sat May  7 10:47:44 2022
+***************************************************************
+
+******************************************************************
+Running                       : C:\Users\FAIZULLAH\source\repos\Faizullah877\live_jpeg_v02\bin\x64\Debug\DPCMed_JPEG.exe
+Start Time                    : Sat May  7 10:48:32 2022
+
+Process ====>>>>>> DPCMed-JPEG Encoding.
+
+Source properties.
+	Source File Name            : abc.yuv
+	Source Frames Width         : 1920
+	Source Frames Height        : 1080
+	Source pixels Color Space   : RGB
+Encoding Paramenters.
+	Subsampling                 : 420
+	Quality                     : 77
+	Entropy Encoding Scheme     : Huffman
+	Total input Frames          : 9
+	Frames to encode..          : 9
+Output Properties.
+	Total frames encoded        : 9
+	Output File Name            : abc_encoded.jpg
+	APP11 Markers               : 32
+	Output File Size            : 2208920 Bytes.
+	bit per pixels              : 0.946896 bits per pixel.
+	Encoding Time               : 0.683000 sec.
+End   Time                  	: Sat May  7 10:48:33 2022
+***************************************************************
+

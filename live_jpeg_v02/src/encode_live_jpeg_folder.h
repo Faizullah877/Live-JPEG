@@ -9,5 +9,6 @@ int encode_live_jpeg_folder(
 	int subsamp,
 	bool wsf_flag,
 	bool wdf_flag,
-	bool arithmetic_flag
+	bool arithmetic_flag,
+	bool enable_log_file
 );

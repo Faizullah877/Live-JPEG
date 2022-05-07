@@ -80,7 +80,9 @@ int encode_live_jpeg_folder(
 	int subsamp,
 	bool wsf_flag,
 	bool wdf_flag,
-	bool arithmetic_flag) {
+	bool arithmetic_flag,
+	bool enable_log_file
+) {
 
 
 	vector<string> images_names;
@@ -103,7 +105,7 @@ int encode_live_jpeg_folder(
 		}
 	}
 	uint no_of_images = images_names.size();
-	cout << "Total Number of Input images : " << no_of_images << endl;
+	//cout << "Total Number of Input images : " << no_of_images << endl;
 	vector<DataBuffer*> jpg_bytestreams;
 	uint infiles_total_size = 0;
 
@@ -114,7 +116,7 @@ int encode_live_jpeg_folder(
 		jpg_bytestreams.push_back(ptr);
 		infiles_total_size += ptr->size;
 	}
-	cout << "Combined Size of all input images is : " << infiles_total_size << endl;
+	//cout << "Combined Size of all input images is : " << infiles_total_size << endl;
 
 	Byte* keyFrameJPG = jpg_bytestreams[0]->data;  // first image of input image exactly same
 	uint keyFrameJPGsize = jpg_bytestreams[0]->size;
@@ -153,23 +155,10 @@ int encode_live_jpeg_folder(
 		fs.open("diff_frame_sizes.txt", std::fstream::in | std::fstream::out | std::fstream::app);
 	}
 
-	FILE* resulttxt;
-	errno_t err3 = fopen_s(&resulttxt, "Live_jpeg_Encoding_history.txt", "a+");
-	if (err3 == 0)
-	{
-		//printf("\Input File  : %s ", In_file_name);
-		//cout << endl;
-	}
-	else
-	{
-		printf("Live_jpeg_Encoding_history.txt  was not opened ");
-		cout << endl;
-		//return;
-	}
 	auto start1 = chrono::high_resolution_clock::now();
 	auto start_time = chrono::system_clock::to_time_t(chrono::system_clock::now());
 	printf("Running : %s\n", executable_name);
-	cout << "Process ====>>>>>> Live_jpeg Encoding" << endl;
+	cout << "Process ====>>>>>> DPCMed_JPEG Encoding" << endl;
 	cout << "Source properties" << endl;
 	cout << "\tSource File Name            : " << In_folder << endl;
 	cout << "\tSource Frames Width         : " << width << endl;
@@ -181,27 +170,6 @@ int encode_live_jpeg_folder(
 	cout << "\tTotal input images          : " << no_of_images << endl;
 	cout << "\tFrames to encode            : " << output_frame_count << endl;
 
-	if (err3 == 0) {
-		char str1[26];
-		ctime_s(str1, sizeof str1, &start_time);
-		fprintf(resulttxt, "******************************************************************\n");
-		fprintf(resulttxt, "Running                       : %s\n", executable_name);
-		fprintf(resulttxt, "Start Time                    : %s", str1);
-		fprintf(resulttxt, "\nProcess ====>>>>>> Live_jpeg Encoding.\n");
-		fprintf(resulttxt, "\nSource properties.\n");
-		fprintf(resulttxt, "\tSource File Name             : %s\n", In_folder);
-		fprintf(resulttxt, "\tSource Frames Width         : %d\n", width);
-		fprintf(resulttxt, "\tSource Frames Height        : %d\n", height);
-		fprintf(resulttxt, "\tSource pixels Color Space   : ");
-		if (ycbcr) fprintf(resulttxt, "YCbCr\n"); else fprintf(resulttxt, "RGB\n");
-		fprintf(resulttxt, "Encoding Paramenters.\n");
-		fprintf(resulttxt, "\tSubsampling                    : %d\n", subsamp);
-		fprintf(resulttxt, "\tQuality                            : %d\n", quality);
-		if (arithmetic_flag) fprintf(resulttxt, "\tEntropy Encoding Scheme     : Arithmetic\n"); else  fprintf(resulttxt, "\tEntropy Encoding Scheme    : Huffman\n");
-		fprintf(resulttxt, "\tTotal input Frames          : %d\n", no_of_images);
-		fprintf(resulttxt, "\tFrames to encode..          : %d\n", output_frame_count);
-
-	}
 
 	DataBuffer* pBuffer = new DataBuffer();
 	DataBuffer* ptr = new DataBuffer();
@@ -457,7 +425,6 @@ int encode_live_jpeg_folder(
 	}
 	else
 	{
-		fprintf(resulttxt, "\nError -> Failed to open output file. Name            : %s\n", out_file_name);
 		printf("The %s for Output was not opened ", out_file_name);
 		cout << endl;
 		return 0;
@@ -481,22 +448,51 @@ int encode_live_jpeg_folder(
 
 	auto end_time = chrono::system_clock::to_time_t(chrono::system_clock::now());
 	float time_elapsed = elapsed / std::chrono::milliseconds(1) / 1000.0;
-	if (err3 == 0) {
-		char str2[26];
-		ctime_s(str2, sizeof str2, &end_time);
-		fprintf(resulttxt, "Output Properties.\n");
-		fprintf(resulttxt, "\tTotal frames encoded        : %d\n", output_frame_count);
-		fprintf(resulttxt, "\tOutput File Name            : %s\n", out_file_name);
-		fprintf(resulttxt, "\tAPP11 Markers               : %d\n", (sos_pool.size() / 65000) + 1);
-		fprintf(resulttxt, "\tOutput File Size              : %d Bytes.\n", dst_size);
-		fprintf(resulttxt, "\tbit per pixels                 : %f bits per pixel.\n", bpp);
-		fprintf(resulttxt, "\tISBR                           : %f \n", ISBR);
-		fprintf(resulttxt, "\tEncoding Time               : %f sec.\n", time_elapsed);
-		fprintf(resulttxt, "End   Time                    : %s", str2);
-		fprintf(resulttxt, "***************************************************************\n\n");
-	}
-	fclose(resulttxt);
+	if (enable_log_file) {
+		FILE* resulttxt;
+		errno_t err3 = fopen_s(&resulttxt, "DPCMed_JPEG_encoding_history.txt", "a+");
+		if (err3 == 0)
+		{
+			char str1[26];
+			ctime_s(str1, sizeof str1, &start_time);
+			fprintf(resulttxt, "******************************************************************\n");
+			fprintf(resulttxt, "Running                       : %s\n", executable_name);
+			fprintf(resulttxt, "Start Time                    : %s", str1);
+			fprintf(resulttxt, "\nProcess ====>>>>>> DPCMed_JPEG Encoding in folder mode.\n");
+			fprintf(resulttxt, "\nSource properties.\n");
+			fprintf(resulttxt, "\tSource Folder Name          : %s\n", In_folder);
+			fprintf(resulttxt, "\tSource Frames Width         : %d\n", width);
+			fprintf(resulttxt, "\tSource Frames Height        : %d\n", height);
+			fprintf(resulttxt, "\tSource pixels Color Space   : ");
+			if (ycbcr) fprintf(resulttxt, "YCbCr\n"); else fprintf(resulttxt, "RGB\n");
+			fprintf(resulttxt, "Encoding Paramenters.\n");
+			fprintf(resulttxt, "\tSubsampling                 : %d\n", subsamp);
+			fprintf(resulttxt, "\tQuality                     : %d\n", quality);
+			if (arithmetic_flag) fprintf(resulttxt, "\tEntropy Encoding Scheme     : Arithmetic\n"); else  fprintf(resulttxt, "\tEntropy Encoding Scheme    : Huffman\n");
+			fprintf(resulttxt, "\tTotal input Frames          : %d\n", no_of_images);
+			fprintf(resulttxt, "\tFrames to encode..          : %d\n", output_frame_count);
+			char str2[26];
+			ctime_s(str2, sizeof str2, &end_time);
+			fprintf(resulttxt, "Output Properties.\n");
+			fprintf(resulttxt, "\tTotal frames encoded        : %d\n", output_frame_count);
+			fprintf(resulttxt, "\tOutput File Name            : %s\n", out_file_name);
+			fprintf(resulttxt, "\tAPP11 Markers               : %d\n", (sos_pool.size() / 65000) + 1);
+			fprintf(resulttxt, "\tOutput File Size            : %d Bytes.\n", dst_size);
+			fprintf(resulttxt, "\tbit per pixels              : %f bits per pixel.\n", bpp);
+			fprintf(resulttxt, "\tISBR                        : %f \n", ISBR);
+			fprintf(resulttxt, "\tEncoding Time               : %f sec.\n", time_elapsed);
+			fprintf(resulttxt, "End   Time                    \t: %s", str2);
+			fprintf(resulttxt, "***************************************************************\n\n");
+		}
+		else
+		{
+			printf("DPCMed_JPEG_encoding_history.txt  was not opened ");
+			cout << endl;
+			//return;
 
+			fclose(resulttxt);
+		}
+	}
 	return 1;
 }
 

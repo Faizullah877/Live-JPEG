@@ -27,6 +27,7 @@ static const std::string opt_wrt_jpg_frame = "-wsf";
 static const std::string opt_wrt_dff_jpg_frame = "-wdf";
 static const std::string opt_work = "-t";
 static const std::string opt_entropy_enc = "-arith";
+static const std::string opt_enable_logfile = "-en_log";
 
 
 int main(int argc, char* argv[])
@@ -46,6 +47,7 @@ int main(int argc, char* argv[])
 	bool wsf_flag = false; // write each frame as seperate jpeg file.
 	bool wdf_flag = false; // write each difference frame as seperate jpeg file.
 	bool arithmetic_flag = false; // to arithmetic encoding.
+	bool enable_log_file = false;  // write encoding/decoding history to a text log file.
 	std::string work_type = "encode";
 	bool folder_mode = false; // for folder containg .jpg images
 
@@ -154,6 +156,10 @@ int main(int argc, char* argv[])
 			int c = atoi(argv[i]);
 			arithmetic_flag = c ? true : false;
 		}
+		else if (arg == opt_enable_logfile) {
+			int lg = atoi(argv[i]);
+			enable_log_file = lg ? true : false;
+		}
 		else if (arg == opt_quality)
 			quality = atoi(argv[i]);
 		else {
@@ -189,17 +195,7 @@ int main(int argc, char* argv[])
 		print_usage();
 		return -1;
 	}
-	//string ifname(input_filename);
-	//std::size_t a = ifname.rfind(".jpg");
-	//if (a != std::string::npos)
-	//{
-	//	decode = true;
-	//}
-	//std::size_t aa = ifname.rfind(".yuv");
-	//if (aa != std::string::npos)
-	//{
-	//	encode = true;
-	//}
+
 
 
 	if (work_type == "encode") {
@@ -214,7 +210,7 @@ int main(int argc, char* argv[])
 				sub_samp,
 				wsf_flag,
 				wdf_flag,
-				arithmetic_flag);
+				arithmetic_flag, enable_log_file);
 		}
 		else {
 			if (width <= 0)
@@ -243,7 +239,9 @@ int main(int argc, char* argv[])
 				sub_samp,
 				wsf_flag,
 				wdf_flag,
-				arithmetic_flag);
+				arithmetic_flag,
+				enable_log_file
+			);
 		}
 	}
 	if (work_type == "decode") {
@@ -254,7 +252,9 @@ int main(int argc, char* argv[])
 			ycbcr,
 			out_format, // 444p or 444i
 			wsf_flag,
-			wdf_flag);
+			wdf_flag,
+			enable_log_file
+		);
 	}
 
 	return 1;

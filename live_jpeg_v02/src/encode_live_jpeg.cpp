@@ -30,7 +30,8 @@ void encode_live_jpeg(
 	int subsamp,
 	bool wsf_flag,
 	bool wdf_flag,
-	bool arithmetic_flag) {
+	bool arithmetic_flag,
+	bool enable_log_file) {
 	if (input_format != MEDIA_YUV444I && input_format != MEDIA_YUV444P) {
 		cout << "Input Format not supported... " << endl;
 		return;
@@ -43,19 +44,7 @@ void encode_live_jpeg(
 		fs.open("diff_frame_sizes.txt", std::fstream::in | std::fstream::out | std::fstream::app);
 	}
 
-	FILE* resulttxt;
-	errno_t err3 = fopen_s(&resulttxt, "Live_jpeg_Encoding_history.txt", "a+");
-	if (err3 == 0)
-	{
-		//printf("\Input File  : %s ", In_file_name);
-		//cout << endl;
-	}
-	else
-	{
-		printf("Live_jpeg_Encoding_history.txt  was not opened ");
-		cout << endl;
-		//return;
-	}
+
 	auto start1 = chrono::high_resolution_clock::now();
 	auto start_time = chrono::system_clock::to_time_t(chrono::system_clock::now());
 	printf("Running : %s\n", executable_name);
@@ -72,28 +61,6 @@ void encode_live_jpeg(
 	if (arithmetic_flag) cout << "\tEntropy Encoding Scheme     : Arithmetic\n"; else  cout << "\tEntropy Encoding Scheme    : Huffman\n";
 	cout << "\tTotal input frames          : " << input_frame_count << endl;
 	cout << "\tFrames to encode            : " << output_frame_count << endl;
-
-	if (err3 == 0) {
-		char str1[26];
-		ctime_s(str1, sizeof str1, &start_time);
-		fprintf(resulttxt, "******************************************************************\n");
-		fprintf(resulttxt, "Running                       : %s\n", executable_name);
-		fprintf(resulttxt, "Start Time                    : %s", str1);
-		fprintf(resulttxt, "\nProcess ====>>>>>> Live_jpeg Encoding.\n");
-		fprintf(resulttxt, "\nSource properties.\n");
-		fprintf(resulttxt, "\tSource File Name             : %s\n", In_file_name);
-		fprintf(resulttxt, "\tSource Frames Width         : %d\n", width);
-		fprintf(resulttxt, "\tSource Frames Height        : %d\n", height);
-		fprintf(resulttxt, "\tSource pixels Color Space   : ");
-		if (ycbcr) fprintf(resulttxt, "YCbCr\n"); else fprintf(resulttxt, "RGB\n");
-		fprintf(resulttxt, "Encoding Paramenters.\n");
-		fprintf(resulttxt, "\tSubsampling                    : %d\n", subsamp);
-		fprintf(resulttxt, "\tQuality                            : %d\n", quality);
-		if (arithmetic_flag) fprintf(resulttxt, "\tEntropy Encoding Scheme     : Arithmetic\n"); else  fprintf(resulttxt, "\tEntropy Encoding Scheme    : Huffman\n");
-		fprintf(resulttxt, "\tTotal input Frames          : %d\n", input_frame_count);
-		fprintf(resulttxt, "\tFrames to encode..          : %d\n", output_frame_count);
-
-	}
 
 	DataBuffer* pBuffer = new DataBuffer();
 	DataBuffer* ptr = new DataBuffer();
@@ -122,15 +89,12 @@ void encode_live_jpeg(
 	else
 	{
 		printf("The %s for Input was not opened ", In_file_name);
-		fprintf(resulttxt, "\nError -> Failed to open source file. Name            : %s\n", In_file_name);
+		//fprintf(resulttxt, "\nError -> Failed to open source file. Name            : %s\n", In_file_name);
 		cout << endl;
 		return;
 	}
 
-	//fseek(InFile, 0L, SEEK_END);
-	//long long input_raw_filesize = ftell(InFile);
-	//fseek(InFile, 0L, SEEK_SET);
-	//cout << "Input Raw File size is : " << input_raw_filesize << endl;
+
 
 	ptr->info.width = width;
 	ptr->info.height = height;
@@ -142,10 +106,6 @@ void encode_live_jpeg(
 	if (input_format == MEDIA_YUV444P)
 	{
 		convert_yuv444p_to_yuv444I(rawFrameData, rawFrameSize, width, height);
-		//FILE* abc;
-		//errno_t errabc = fopen_s(&abc, "Raw_frame_01_1024x512_444P.yuv", "wb");
-		//fwrite(rawFrameData, sizeof(Byte), rawFrameSize, abc);
-		//fclose(abc);
 	}
 
 	struct jpeg_compress_struct cinfo;
@@ -316,13 +276,7 @@ void encode_live_jpeg(
 		//cout << "in here\n" << ftell(InFile);
 		if (input_format == MEDIA_YUV444P)
 		{
-
-
 			convert_yuv444p_to_yuv444I(rawFrameData, rawFrameSize, width, height);
-			//FILE* abc;
-			//errno_t errabc = fopen_s(&abc, "Raw_frame_01_1024x512_444P.yuv", "wb");
-			//fwrite(rawFrameData, sizeof(Byte), rawFrameSize, abc);
-			//fclose(abc);
 		}
 
 		jpeg_start_compress(&cinfo1, TRUE);
@@ -339,81 +293,33 @@ void encode_live_jpeg(
 			sprintf_s(fileN, 100, "Frame_%d.jpg", i);
 			err = fopen_s(&fff, (char*)fileN, "wb");
 			fwrite(jpeg_buf1, sizeof(unsigned char), jpeg_size1, fff);
-
-			if (diff_frame_size_to_txt) {
-				fs << " Size of frame in Bytes   :  ";
-				fs << setw(4) << i;
-				fs << "  :  is     :    ";
-				fs << jpeg_size1;
-			}
-
-
-
-			//int uniq_freq[3340] = { 0 };
-			//int uniq_freq_counter = 0;
-			//int total_data = 0;
-			//int min = 0; int max = 0; int max_frq_occur = 0;
-			//cout << "Frame 2 JPEG size : " << jpeg_size1 << endl;
-			delete pBuffer->data;
-			pBuffer->data = new unsigned char[jpeg_size1];
-			memcpy(pBuffer->data, jpeg_buf1, jpeg_size1);
-			pBuffer->size = jpeg_size1;
-			get_coefficients_f(jpeg_buf1, jpeg_size1, hjpeg1, nextCoeff);
-			// find difference of coeffients. 
-
-			for (uint c = 0; c < coeff_buf_size; c++) {
-				*(diff + c) = *(PreviousCoeff + c) - *(nextCoeff + c);
-			}
-			//uniq_freq[*(diff + c) + 1670]++;
-			//if (*(diff + c) > max)
-			//	max = *(diff + c);
-			//
-			//if (*(diff + c) < min)
-			//	min = *(diff + c);
-			///*if(c==1000)
-			//*(diff + c) = 1050;*/
-			//int test = (int)*(PreviousCoeff + c) - (int)*(nextCoeff + c);
-			//
-			////if (test >= 1050 && test <= 1050) {
-			////if (test ==1050 || (test == 1098)   || test == 1498) {			
-			//	//printf("ERROR..... %d	%d\n", c%64, *(diff + c));
-			//	//*(diff + c) = *(PreviousCoeff + c) ;
-			////}
-			//if ( test == -1345) {
-			//	//printf("ERROR2..... %d	%d\n", c%64, *(diff + c));
-			//	//*(diff + c) = *(PreviousCoeff + c);
-			//}
+			fclose(fff);
 		}
-		//int temp_value = 0;
-		//cout << endl << "Frame Completed " << endl;
-		//max_frq_occur = 0;
-		//for (int i = 0; i < 3340; i++) {
-		//	if ((uniq_freq[i] == 1 || uniq_freq[i] == 2 || uniq_freq[i] == 3 || uniq_freq[i] == 4)) {
-		//		temp_value++;
-		//	//	if(temp_value<500)
-		//		for (uint c = 0; c < coeff_buf_size; c++) {
-		//			if (*(diff + c) == uniq_freq[i])
-		//				*(diff + c) = *(PreviousCoeff + c);
-		//		}
-		//	//	printf("%d	 :	%d	\n", i - 1670, uniq_freq[i]);
-		//	}
-		//	if (uniq_freq[i] > 0)
-		//	{
-		//		total_data += uniq_freq[i];
-		//		uniq_freq_counter++;
-		//		if (uniq_freq[i] > max_frq_occur)
-		//			max_frq_occur = uniq_freq[i];
-		//	}
-		//	//if (i - 1670 == 1050 || i - 1670 == -1345 || i-1670==1098 || i - 1670 == 1498)
-		//		//printf("%d	 :	%d	\n", i - 1670, uniq_freq[i]);
-		//}
-		/*printf("\n\nuniq freq :  %d	 :	\n",  uniq_freq_counter);
-		printf("\n\max :  %d	 :	\n",  max);
-		printf("\n\nmin :  %d	 :	\n",  min);
-		printf("\n\max frq  :  %d	 :	\n",  max_frq_occur);
-		printf("\n\total data	:  %d	 :	\n", total_data);*/
 
-		//diff = PreviousCoeff;
+		if (diff_frame_size_to_txt) {
+			fs << " Size of frame in Bytes   :  ";
+			fs << setw(4) << i;
+			fs << "  :  is     :    ";
+			fs << jpeg_size1;
+		}
+
+
+
+		//int uniq_freq[3340] = { 0 };
+		//int uniq_freq_counter = 0;
+		//int total_data = 0;
+		//int min = 0; int max = 0; int max_frq_occur = 0;
+		//cout << "Frame 2 JPEG size : " << jpeg_size1 << endl;
+		delete pBuffer->data;
+		pBuffer->data = new unsigned char[jpeg_size1];
+		memcpy(pBuffer->data, jpeg_buf1, jpeg_size1);
+		pBuffer->size = jpeg_size1;
+		get_coefficients_f(jpeg_buf1, jpeg_size1, hjpeg1, nextCoeff);
+		// find difference of coeffients. 
+
+		for (uint c = 0; c < coeff_buf_size; c++) {
+			*(diff + c) = *(PreviousCoeff + c) - *(nextCoeff + c);
+		}
 
 		pBuffer->additional_data = (unsigned char*)diff;
 
@@ -493,7 +399,7 @@ void encode_live_jpeg(
 	}
 	else
 	{
-		fprintf(resulttxt, "\nError -> Failed to open output file. Name            : %s\n", out_file_name);
+		//fprintf(resulttxt, "\nError -> Failed to open output file. Name            : %s\n", out_file_name);
 		printf("The %s for Output was not opened ", out_file_name);
 		cout << endl;
 		return;
@@ -516,66 +422,96 @@ void encode_live_jpeg(
 
 	auto end_time = chrono::system_clock::to_time_t(chrono::system_clock::now());
 	float time_elapsed = elapsed / std::chrono::milliseconds(1) / 1000.0;
-	if (err3 == 0) {
-		char str2[26];
-		ctime_s(str2, sizeof str2, &end_time);
-		fprintf(resulttxt, "Output Properties.\n");
-		fprintf(resulttxt, "\tTotal frames encoded        : %d\n", output_frame_count);
-		fprintf(resulttxt, "\tOutput File Name            : %s\n", out_file_name);
-		fprintf(resulttxt, "\tAPP11 Markers               : %d\n", (sos_pool.size() / 65000) + 1);
-		fprintf(resulttxt, "\tOutput File Size              : %d Bytes.\n", dst_size);
-		fprintf(resulttxt, "\tbit per pixels                 : %f bits per pixel.\n", bpp);
-		fprintf(resulttxt, "\tEncoding Time               : %f sec.\n", time_elapsed);
-		fprintf(resulttxt, "End   Time                    : %s", str2);
-		fprintf(resulttxt, "***************************************************************\n\n");
+
+	if (enable_log_file) {
+		FILE* resulttxt;
+		errno_t err3 = fopen_s(&resulttxt, "DPCMed_JPEG_encoding_history.txt", "a+");
+		if (err3 == 0)
+		{
+			char str1[26];
+			ctime_s(str1, sizeof str1, &start_time);
+			fprintf(resulttxt, "******************************************************************\n");
+			fprintf(resulttxt, "Running                       : %s\n", executable_name);
+			fprintf(resulttxt, "Start Time                    : %s", str1);
+			fprintf(resulttxt, "\nProcess ====>>>>>> DPCMed-JPEG Encoding.\n");
+			fprintf(resulttxt, "\nSource properties.\n");
+			fprintf(resulttxt, "\tSource File Name            : %s\n", In_file_name);
+			fprintf(resulttxt, "\tSource Frames Width         : %d\n", width);
+			fprintf(resulttxt, "\tSource Frames Height        : %d\n", height);
+			fprintf(resulttxt, "\tSource pixels Color Space   : ");
+			if (ycbcr) fprintf(resulttxt, "YCbCr\n"); else fprintf(resulttxt, "RGB\n");
+			fprintf(resulttxt, "Encoding Paramenters.\n");
+			fprintf(resulttxt, "\tSubsampling                 : %d\n", subsamp);
+			fprintf(resulttxt, "\tQuality                     : %d\n", quality);
+			if (arithmetic_flag) fprintf(resulttxt, "\tEntropy Encoding Scheme     : Arithmetic\n"); else  fprintf(resulttxt, "\tEntropy Encoding Scheme     : Huffman\n");
+			fprintf(resulttxt, "\tTotal input Frames          : %d\n", input_frame_count);
+			fprintf(resulttxt, "\tFrames to encode..          : %d\n", output_frame_count);
+
+
+			char str2[26];
+			ctime_s(str2, sizeof str2, &end_time);
+			fprintf(resulttxt, "Output Properties.\n");
+			fprintf(resulttxt, "\tTotal frames encoded        : %d\n", output_frame_count);
+			fprintf(resulttxt, "\tOutput File Name            : %s\n", out_file_name);
+			fprintf(resulttxt, "\tAPP11 Markers               : %d\n", (sos_pool.size() / 65000) + 1);
+			fprintf(resulttxt, "\tOutput File Size            : %d Bytes.\n", dst_size);
+			fprintf(resulttxt, "\tbit per pixels              : %f bits per pixel.\n", bpp);
+			fprintf(resulttxt, "\tEncoding Time               : %f sec.\n", time_elapsed);
+			fprintf(resulttxt, "End   Time                  \t: %s", str2);
+			fprintf(resulttxt, "***************************************************************\n\n");
+			fclose(resulttxt);
+		}
+		else
+		{
+			printf("DPCMed_JPEG_encoding_history.txt  was not opened ");
+			cout << endl;
+		}
+
 	}
-	fclose(resulttxt);
-
-
 }
 
-//
-//void extract_curr_sos_data(Byte* jpeg_data, unsigned int jpegsize, Byte** sos_data, unsigned * sos_size) {
-//	int header_len = 0;
-//
-//	Byte* jpeg_buf = jpeg_data;
-//	byte  m_ffd8 = sj_get_2byte(&jpeg_buf);
-//	header_len += 2;
-//	/*if (m_ffd8 != 0xFFD8)
-//		return;
-//*/
-//	byte last = sj_get_byte(&jpeg_buf);
-//	byte current = sj_get_byte(&jpeg_buf);
-//	header_len += 2;
-//	//reading markers;
-//	while (1)
-//	{
-//		if (last != 0xFF)
-//			cout << "marker expected : " << endl;
-//
-//
-//		if (current == M_SOS) {
-//			unsigned long int marker_length = sj_get_2byte(&jpeg_buf);
-//			header_len += marker_length;
-//			jpeg_buf += marker_length - 2;
-//			break;
-//		}
-//		else {
-//			unsigned long int marker_length = sj_get_2byte(&jpeg_buf);
-//			header_len += marker_length;
-//			jpeg_buf += marker_length - 2;
-//		}
-//
-//		last = sj_get_byte(&jpeg_buf);
-//		current = sj_get_byte(&jpeg_buf);
-//		header_len += 2;
-//	}
-//
-//	*sos_size = jpegsize - header_len - 2;
-//	*sos_data = jpeg_buf;
-//	
-//	//cout <<hex<< "\nabc : " << (int)jpeg_buf[0] << "  " << (int)jpeg_buf[1] << endl;
-//	//cout << "abc : " << (int)jpeg_buf[jpegsize - header_len - 2 -1] << "  " << (int)jpeg_buf[jpegsize - header_len - 2 -2] << endl;
-//	//cout << dec;
-//	return;
-//}
+	//
+	//void extract_curr_sos_data(Byte* jpeg_data, unsigned int jpegsize, Byte** sos_data, unsigned * sos_size) {
+	//	int header_len = 0;
+	//
+	//	Byte* jpeg_buf = jpeg_data;
+	//	byte  m_ffd8 = sj_get_2byte(&jpeg_buf);
+	//	header_len += 2;
+	//	/*if (m_ffd8 != 0xFFD8)
+	//		return;
+	//*/
+	//	byte last = sj_get_byte(&jpeg_buf);
+	//	byte current = sj_get_byte(&jpeg_buf);
+	//	header_len += 2;
+	//	//reading markers;
+	//	while (1)
+	//	{
+	//		if (last != 0xFF)
+	//			cout << "marker expected : " << endl;
+	//
+	//
+	//		if (current == M_SOS) {
+	//			unsigned long int marker_length = sj_get_2byte(&jpeg_buf);
+	//			header_len += marker_length;
+	//			jpeg_buf += marker_length - 2;
+	//			break;
+	//		}
+	//		else {
+	//			unsigned long int marker_length = sj_get_2byte(&jpeg_buf);
+	//			header_len += marker_length;
+	//			jpeg_buf += marker_length - 2;
+	//		}
+	//
+	//		last = sj_get_byte(&jpeg_buf);
+	//		current = sj_get_byte(&jpeg_buf);
+	//		header_len += 2;
+	//	}
+	//
+	//	*sos_size = jpegsize - header_len - 2;
+	//	*sos_data = jpeg_buf;
+	//	
+	//	//cout <<hex<< "\nabc : " << (int)jpeg_buf[0] << "  " << (int)jpeg_buf[1] << endl;
+	//	//cout << "abc : " << (int)jpeg_buf[jpegsize - header_len - 2 -1] << "  " << (int)jpeg_buf[jpegsize - header_len - 2 -2] << endl;
+	//	//cout << dec;
+	//	return;
+	//}

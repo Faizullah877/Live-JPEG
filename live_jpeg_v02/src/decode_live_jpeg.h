@@ -7,5 +7,6 @@ void decode_live_jpeg(
 	bool ycbcr,
 	MEDIA_FORMAT output_format, 
 	bool wsf_flag, 
-	bool wdf_flag
+	bool wdf_flag,
+	bool enable_log_file
 );

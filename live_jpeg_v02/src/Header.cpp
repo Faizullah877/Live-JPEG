@@ -10,7 +10,7 @@ unsigned char type_jpeg360[16] = { 0x78, 0x5F, 0x34, 0xB7, 0x5D, 0x4B, 0x47, 0x4
 
 void print_usage()
 {
-	printf("Usage: live_jpeg_v02.exe <options>\n");
+	printf("Usage: DPCMed_JPEG.exe <options>\n");
 	printf("Options: \n");
 	printf("    -t          work = encode/decode.\n");
 	printf("    -i          Source File name            (max 255 characters).\n");
@@ -28,6 +28,7 @@ void print_usage()
 	printf("    -wsf        Write each frame as seperate jpg file (value 0 or 1).\n");
 	printf("    -wdf        Write each Difference frame as seperate jpg file (value 0 or 1).\n");
 	printf("    -arith      Entropy Encoding Scheme (arithmetic = 1) default is huffman.\n");
+	printf("    -en_log     Enable log file (0/1) default is 0");
 	printf("\n");
 	return;
 	//exit(1);
