@@ -38,6 +38,7 @@ DPCMed_JPEG.exe -f jpg_images_folder -o DPCMed_JPEG_enocoded_file.jpg -q 85 -ari
 | 13	| `-wdf`	| 	Write each difference frame as separate JPEG file	| `0` or `1`	| 	`0` |
 | 14	| `-sub_samp` | 	JEPG encoding Subsampling format		| `420`/`444`	|			`420` |
 | 15	| `-arith`	| Enables Arithmetic entropy encoding 		| `0` / `1`	| 	`0` |
+| 16 | `-en_log` | Writes log to a txt file when enabled | `0` / `1`	| 	`0` |
 
 
 
@@ -59,6 +60,7 @@ DPCMed_JPEG.exe -i AI_Building_3840x1920_YUV444P_450f_q75_420_huff.jpg -o De_AI_
 | 6	    | `-wdf`    	| Write each difference frame as separate JPEG file | `0`/`1`  | `0` |  	
 | 7	    | `-osf`	    | Output pixels packing 	| `444I` for 444 interleaved | `444P` for 444 planner |  `444I` | 	
 | 8	    | `-pix_fmt` | Output color space	| `RGB` / `YUV`	| `RGB` | 
+| 9     | `-en_log` | Writes log to a txt file when enabled | `0` / `1`	| 	`0` |
 
 
 Note: 
